@@ -26,6 +26,7 @@
     "build": "node psql-setup-script.js"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3"
+    "bcryptjs": "^2.4.3",
+    "express-validator": "^7.0.1"
   }
 }
