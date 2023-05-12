@@ -1,4 +1,4 @@
-# Party Up
+# Party-Up
 
 ## Database Schema Design
 
