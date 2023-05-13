@@ -1,4 +1,4 @@
-# Party-Up
+# Merge_Point
 
 ## Database Schema Design
 

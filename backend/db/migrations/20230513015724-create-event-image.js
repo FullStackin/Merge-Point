@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "production" && process.env.SCHEMA) {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "Users",
+      "EventImages",
       {
         id: {
           allowNull: false,
@@ -18,19 +18,18 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        username: {
-          type: Sequelize.STRING(30),
+        eventId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
         },
-        email: {
-          type: Sequelize.STRING(256),
+        url: {
+          type: Sequelize.STRING,
           allowNull: false,
-          unique: true,
         },
-        hashedPassword: {
-          type: Sequelize.STRING.BINARY,
+        preview: {
+          type: Sequelize.BOOLEAN,
           allowNull: false,
+          defaultValue: false,
         },
         createdAt: {
           allowNull: false,
@@ -46,8 +45,8 @@ module.exports = {
       options
     );
   },
-  async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
+  async down(queryInterface) {
+    options.tableName = "EventImages";
     await queryInterface.dropTable(options);
   },
 };

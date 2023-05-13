@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "production" && process.env.SCHEMA) {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "Users",
+      "GroupImages",
       {
         id: {
           allowNull: false,
@@ -18,36 +18,35 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        username: {
-          type: Sequelize.STRING(30),
+        groupId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
         },
-        email: {
-          type: Sequelize.STRING(256),
+        url: {
           allowNull: false,
-          unique: true,
+          type: Sequelize.STRING,
         },
-        hashedPassword: {
-          type: Sequelize.STRING.BINARY,
+        preview: {
           allowNull: false,
+          type: Sequelize.BOOLEAN,
+          defaultValue: false,
         },
         createdAt: {
           allowNull: false,
-          type: Sequelize.DATE,
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+          type: Sequelize.DATE,
         },
         updatedAt: {
           allowNull: false,
-          type: Sequelize.DATE,
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+          type: Sequelize.DATE,
         },
       },
       options
     );
   },
-  async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
+  async down(queryInterface) {
+    options.tableName = "GroupImages";
     await queryInterface.dropTable(options);
   },
 };
