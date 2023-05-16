@@ -4,17 +4,21 @@ const { Model, Validator } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      User.belongsToMany(models.Group, {
-        through: models.Membership,
-        foreignKey: "userId",
-        otherKey: "groupId",
-      });
       User.belongsToMany(models.Event, {
         through: models.Attendance,
         foreignKey: "userId",
         otherKey: "eventId",
       });
-      User.hasMany(models.Group, { foreignKey: "organizerId" });
+
+      User.hasMany(models.Group, {
+        foreignKey: "organizerId",
+      });
+
+      User.belongsToMany(models.Group, {
+        through: "Membership",
+        foreignKey: "userId",
+        otherKey: "groupId",
+      });
     }
   }
 
@@ -25,13 +29,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           len: [4, 30],
-          isNotEmail: true,
-          isNotEmailC(value) {
+          isNotEmail(value) {
             if (Validator.isEmail(value)) {
               throw new Error("Cannot be an email.");
             }
           },
         },
+      },
+      firstName: {
+        type: DataTypes.STRING,
+      },
+      lastName: {
+        type: DataTypes.STRING,
       },
       email: {
         type: DataTypes.STRING,
