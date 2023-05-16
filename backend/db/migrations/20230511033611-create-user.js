@@ -1,12 +1,11 @@
 "use strict";
-require("dotenv").config();
+/** @type {import('sequelize-cli').Migration} */
 
 let options = {};
-if (process.env.NODE_ENV === "production" && process.env.SCHEMA) {
+if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
@@ -17,6 +16,12 @@ module.exports = {
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER,
+        },
+        firstName: {
+          type: Sequelize.STRING(30),
+        },
+        lastName: {
+          type: Sequelize.STRING(30),
         },
         username: {
           type: Sequelize.STRING(30),

@@ -1,12 +1,11 @@
 "use strict";
-require("dotenv").config();
+/** @type {import('sequelize-cli').Migration} */
 
 let options = {};
-if (process.env.NODE_ENV === "production" && process.env.SCHEMA) {
+if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
@@ -20,16 +19,15 @@ module.exports = {
         },
         eventId: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          references: {
+            model: "Events",
+          },
         },
         url: {
           type: Sequelize.STRING,
-          allowNull: false,
         },
         preview: {
           type: Sequelize.BOOLEAN,
-          allowNull: false,
-          defaultValue: false,
         },
         createdAt: {
           allowNull: false,
@@ -45,7 +43,7 @@ module.exports = {
       options
     );
   },
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     options.tableName = "EventImages";
     await queryInterface.dropTable(options);
   },
