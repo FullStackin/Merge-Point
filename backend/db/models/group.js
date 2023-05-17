@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     static associate(models) {
@@ -25,11 +26,22 @@ module.exports = (sequelize, DataTypes) => {
       Group.hasMany(models.GroupImage, {
         foreignKey: "groupId",
       });
+
+      Group.hasMany(models.Membership, {
+        foreignKey: "groupId",
+      });
     }
   }
+
   Group.init(
     {
-      organizerId: DataTypes.INTEGER,
+      organizerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isInt: true,
+        },
+      },
       name: {
         type: DataTypes.STRING,
         validate: {
@@ -58,5 +70,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Group",
     }
   );
+
   return Group;
 };

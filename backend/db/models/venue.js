@@ -3,18 +3,16 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Venue extends Model {
     static associate(models) {
-      Venue.hasMany(models.Event, {
-        foreignKey: "venueId",
-      });
-
-      Venue.belongsTo(models.Group, {
-        foreignKey: "groupId",
-      });
+      Venue.hasMany(models.Event);
+      Venue.belongsTo(models.Group);
     }
   }
   Venue.init(
     {
-      groupId: DataTypes.INTEGER,
+      groupId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       address: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -27,8 +25,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      lat: DataTypes.DECIMAL,
-      lng: DataTypes.DECIMAL,
+      lat: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      lng: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
     },
     {
       sequelize,

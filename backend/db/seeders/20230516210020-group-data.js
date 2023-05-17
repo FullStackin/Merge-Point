@@ -1,6 +1,6 @@
 "use strict";
 
-let options = {};
+let options = { tableName: "Groups" };
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "options",
+      options,
       [
         {
           organizerId: 1,
@@ -57,13 +57,17 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    options.tableName = "Groups";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
       options,
       {
         name: {
-          [Op.in]: ["MMA Mastery: Unleash Your Inner Champion", "JavaScript Junction: Exploring the Power of JS", "Trailblazers: Conquer Nature's Challenges", "ProperFit: Mastering Workout Mechanics"],
+          [Op.in]: [
+            "MMA Mastery: Unleash Your Inner Champion",
+            "JavaScript Junction: Exploring the Power of JS",
+            "Trailblazers: Conquer Nature's Challenges",
+            "ProperFit: Mastering Workout Mechanics",
+          ],
         },
       },
       {}

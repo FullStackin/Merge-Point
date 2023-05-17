@@ -3,16 +3,24 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class EventImage extends Model {
     static associate(models) {
-      EventImage.belongsTo(models.Event, {
-        foreignKey: "eventId",
-      });
+      EventImage.belongsTo(models.Event, { foreignKey: "eventId" });
     }
   }
   EventImage.init(
     {
-      eventId: DataTypes.INTEGER,
-      url: DataTypes.STRING,
-      preview: DataTypes.BOOLEAN,
+      eventId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      preview: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       sequelize,
