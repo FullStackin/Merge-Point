@@ -14,14 +14,12 @@ const {
 const { requireAuth } = require("../../utils/auth.js");
 const { handleValidationErrors } = require("../../utils/validation.js");
 
-// Get all Groups
 router.get("/", async (req, res) => {
   const groups = await Group.findAll();
 
   res.json(groups);
 });
 
-// Get all Groups joined or organized by the Current User
 router.get("/current", requireAuth, async (req, res) => {
   const userId = req.user.id;
 
@@ -45,7 +43,6 @@ router.get("/current", requireAuth, async (req, res) => {
   res.json(groups);
 });
 
-// Get details of a Group from an id
 router.get("/:groupId", (req, res) => {
   const groupId = req.params.groupId;
 
@@ -62,7 +59,6 @@ router.get("/:groupId", (req, res) => {
     });
 });
 
-// Create a Group
 router.post("/", requireAuth, handleValidationErrors, async (req, res) => {
   const userId = req.user.id;
   const groupData = {
@@ -82,7 +78,6 @@ router.post("/", requireAuth, handleValidationErrors, async (req, res) => {
   }
 });
 
-// Add an Image to a Group based on the Group's id
 router.post("/:groupId/images", requireAuth, async (req, res) => {
   try {
     const groupId = req.params.groupId;
@@ -105,7 +100,6 @@ router.post("/:groupId/images", requireAuth, async (req, res) => {
   }
 });
 
-// Edit a Group
 router.put("/:groupId", requireAuth, (req, res) => {
   const groupId = req.params.groupId;
   const groupData = req.body;
@@ -113,9 +107,7 @@ router.put("/:groupId", requireAuth, (req, res) => {
   Group.findByPk(groupId)
     .then((group) => {
       if (group) {
-        // Check if the current user is the organizer of the group
         if (group.organizerId === req.user.id) {
-          // User has access, update the group
           group
             .update(groupData)
             .then((updatedGroup) => {
@@ -125,11 +117,9 @@ router.put("/:groupId", requireAuth, (req, res) => {
               res.status(400).json({ message: "Bad Request" });
             });
         } else {
-          // User does not have access to update the group
           res.status(403).json({ message: "Forbidden" });
         }
       } else {
-        // Group not found
         res.status(404).json({ message: "Group couldn't be found" });
       }
     })
@@ -138,7 +128,6 @@ router.put("/:groupId", requireAuth, (req, res) => {
     });
 });
 
-// Delete a Group
 router.delete("/:groupId", requireAuth, (req, res) => {
   const groupId = req.params.groupId;
 
@@ -226,4 +215,59 @@ router.post(
     res.status(201).json(venue);
   }
 );
+
+router.get("/:groupId/events", async (req, res) => {
+  const { groupId } = req.params;
+
+  try {
+    const events = await Event.findAll({
+      where: {
+        groupId: parseInt(groupId),
+      },
+      attributes: {
+        exclude: ["description", "price", "capacity", "createdAt", "updatedAt"],
+      },
+      include: [
+        { model: Group, attributes: ["id", "name", "city", "state"] },
+        { model: Venue, attributes: ["id", "city", "state"] },
+        { model: EventImage },
+      ],
+    });
+
+    if (events.length === 0) {
+      return entityNotFound(res, "Group");
+    }
+
+    const eventsArr = [];
+    for (const event of events) {
+      const eventPojo = event.toJSON();
+      const numAttending = await Attendance.count({
+        where: {
+          eventId: event.id,
+        },
+      });
+
+      eventPojo.numAttending = numAttending;
+      eventPojo.previewImage = null;
+
+      for (const image of eventPojo.EventImages) {
+        if (image.preview === true) {
+          eventPojo.previewImage = image.url;
+          break;
+        }
+      }
+
+      delete eventPojo.EventImages;
+
+      eventsArr.push(eventPojo);
+    }
+
+    res.json({ Events: eventsArr });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "An error occurred while retrieving events." });
+  }
+});
+
 module.exports = router;
