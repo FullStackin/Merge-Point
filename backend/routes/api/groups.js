@@ -329,4 +329,213 @@ router.post(
     res.status(201).json(event);
   }
 );
+
+router.get("/:groupId/members", async (req, res) => {
+  const group = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+  });
+
+  if (!group) {
+    return res.status(404).json({
+      message: "Group couldn't be found",
+    });
+  }
+
+  const membership = req.user
+    ? await Membership.findOne({
+        where: {
+          groupId: req.params.groupId,
+          userId: req.user.id,
+        },
+      })
+    : null;
+
+  const membershipStatus = ["co-host", "member"];
+  const isOrganizerOrCoHost =
+    req.user &&
+    (group.organizerId === req.user.id ||
+      (membership && membership.status === "co-host"));
+
+  const whereClause = {
+    groupId: group.id,
+    ...(isOrganizerOrCoHost ? {} : { status: { [Op.in]: membershipStatus } }),
+  };
+
+  const oMembers = await Membership.findAll({
+    attributes: {
+      exclude: ["createdAt", "updatedAt"],
+    },
+    where: whereClause,
+  });
+
+  const Members = [];
+
+  for (const member of oMembers) {
+    const user = await User.findOne({
+      where: {
+        id: member.userId,
+      },
+      attributes: ["id", "firstName", "lastName"],
+    });
+
+    const memberData = user.toJSON();
+    memberData.Membership = {
+      status: member.status,
+    };
+
+    Members.push(memberData);
+  }
+
+  return res.status(200).json({ Members });
+});
+
+router.post("/:groupId/membership", requireAuth, async (req, res) => {
+  const group = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+  });
+
+  const membership = await Membership.findOne({
+    where: {
+      groupId: req.params.groupId,
+      userId: req.user.id,
+    },
+  });
+
+  if (!group)
+    return res.status(404).json({ message: "Group couldn't be found" });
+
+  if (membership) {
+    if (membership.status === "pending") {
+      return res.status(400).json({
+        message: "Membership has already been requested",
+      });
+    } else {
+      return res.status(400).json({
+        message: "User is already a member of the group",
+      });
+    }
+  } else {
+    const newMember = await Membership.create({
+      userId: req.user.id,
+      groupId: req.params.groupId,
+      status: "pending",
+    });
+
+    const returnMem = {
+      memberId: newMember.userId,
+      status: newMember.status,
+    };
+
+    return res.status(200).json(returnMem);
+  }
+});
+
+router.put("/:groupId/membership", requireAuth, async (req, res) => {
+  const group = await Group.findOne({ where: { id: req.params.groupId } });
+
+  if (!group) {
+    return res.status(404).json({ message: "Group couldn't be found" });
+  }
+
+  const membership = await Membership.findOne({
+    where: { groupId: req.params.groupId, userId: req.user.id },
+  });
+
+  const { memberId, status } = req.body;
+  const user = await User.findOne({ where: { id: memberId } });
+  const newMembership = await Membership.findOne({
+    where: { groupId: req.params.groupId, userId: memberId },
+  });
+
+  if (status === "pending") {
+    return res.status(400).json({
+      message: "Validations Error",
+      errors: { status: "Cannot change a membership status to pending" },
+    });
+  }
+
+  if (!user) {
+    return res.status(400).json({
+      message: "Validation Error",
+      errors: { memberId: "User couldn't be found" },
+    });
+  }
+
+  if (!newMembership) {
+    return res.status(404).json({
+      message: "Membership between the user and the group does not exist",
+    });
+  }
+
+  if (status === "member") {
+    if (
+      group.organizerId !== req.user.id &&
+      (!membership || membership.status !== "co-host")
+    ) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+    newMembership.status = "member";
+    await newMembership.save();
+    return res.json({
+      id: newMembership.id,
+      groupId: newMembership.groupId,
+      memberId,
+      status: "member",
+    });
+  }
+
+  if (status === "co-host") {
+    if (group.organizerId !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+    newMembership.status = "co-host";
+    await newMembership.save();
+    return res.json({
+      id: newMembership.id,
+      groupId: newMembership.groupId,
+      memberId,
+      status: "co-host",
+    });
+  }
+
+  return res.status(400).json({ message: "Invalid status provided" });
+});
+
+router.delete("/:groupId/membership", requireAuth, async (req, res) => {
+  const { memberId } = req.body;
+
+  const member = await User.findOne({ where: { id: memberId } });
+  if (!member) {
+    return res.status(400).json({
+      message: "Validation Error",
+      errors: { memberId: "User couldn't be found" },
+    });
+  }
+
+  const group = await Group.findOne({ where: { id: req.params.groupId } });
+  if (!group) {
+    return res.status(404).json({ message: "Group couldn't be found" });
+  }
+
+  const membership = await Membership.findOne({
+    where: { userId: memberId, groupId: req.params.groupId },
+  });
+  if (!membership) {
+    return res
+      .status(404)
+      .json({ message: "Membership does not exist for this User" });
+  }
+
+  if (group.organizerId === req.user.id || membership.userId === req.user.id) {
+    await membership.destroy();
+    return res.json({ message: "Successfully deleted membership from group" });
+  }
+
+  return res.status(403).json({ message: "Forbidden" });
+});
+
 module.exports = router;
