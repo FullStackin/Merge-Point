@@ -32,7 +32,7 @@ module.exports = {
 
     options.tableName = "GroupImages";
 
-    return queryInterface.bulkInsert(options.tableName, groupImagesData, {});
+    return queryInterface.bulkInsert(options, groupImagesData, {});
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -41,7 +41,7 @@ module.exports = {
     options.tableName = "GroupImages";
 
     await queryInterface.bulkDelete(
-      options.tableName,
+      options,
       {
         groupId: { [Op.in]: [1, 2, 3, 4] },
       },

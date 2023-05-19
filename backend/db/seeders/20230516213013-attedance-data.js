@@ -24,15 +24,17 @@ module.exports = {
         status: "attending",
       },
     ];
+    options.tableName = "Attendances";
 
-    await queryInterface.bulkInsert("Attendances", attendances, {});
+    await queryInterface.bulkInsert(options, attendances, {});
   },
 
   down: async (queryInterface, Sequelize) => {
     const Op = Sequelize.Op;
+    options.tableName = "Attendances";
 
     await queryInterface.bulkDelete(
-      "Attendances",
+      options,
       {
         eventId: {
           [Op.in]: [1, 2, 3, 4],

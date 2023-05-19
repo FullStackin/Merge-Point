@@ -6,10 +6,10 @@ let options = {};
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
+options.tableName = "Memberships";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    options.tableName = "Memberships";
     return queryInterface.bulkInsert(
       options,
       [

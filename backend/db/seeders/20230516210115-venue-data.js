@@ -41,14 +41,15 @@ module.exports = {
         lng: -122.341,
       },
     ];
-
-    await queryInterface.bulkInsert(options.tableName, venues, {});
+    options.tableName = "Venues";
+    await queryInterface.bulkInsert(options, venues, {});
   },
 
   down: async (queryInterface, Sequelize) => {
     const Op = Sequelize.Op;
+    options.tableName = "Venues";
     await queryInterface.bulkDelete(
-      options.tableName,
+      options,
       {
         address: {
           [Op.in]: [
