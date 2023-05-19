@@ -1,25 +1,44 @@
-'use strict';
+"use strict";
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
+  up: async (queryInterface, Sequelize) => {
+    const attendances = [
+      {
+        eventId: 1,
+        userId: 1,
+        status: "waitlist",
+      },
+      {
+        eventId: 2,
+        userId: 2,
+        status: "attending",
+      },
+      {
+        eventId: 3,
+        userId: 3,
+        status: "pending",
+      },
+      {
+        eventId: 4,
+        userId: 4,
+        status: "attending",
+      },
+    ];
+
+    await queryInterface.bulkInsert("Attendances", attendances, {});
   },
 
-  async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
-  }
+  down: async (queryInterface, Sequelize) => {
+    const Op = Sequelize.Op;
+
+    await queryInterface.bulkDelete(
+      "Attendances",
+      {
+        eventId: {
+          [Op.in]: [1, 2, 3, 4],
+        },
+      },
+      {}
+    );
+  },
 };

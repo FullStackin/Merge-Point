@@ -21,6 +21,7 @@ module.exports = {
           type: Sequelize.INTEGER,
           references: {
             model: "Groups",
+            key: "id",
           },
         },
         address: {
@@ -36,10 +37,10 @@ module.exports = {
           allowNull: false,
         },
         lat: {
-          type: Sequelize.DECIMAL,
+          type: Sequelize.FLOAT,
         },
         lng: {
-          type: Sequelize.DECIMAL,
+          type: Sequelize.FLOAT,
         },
         createdAt: {
           allowNull: false,
@@ -56,7 +57,6 @@ module.exports = {
     );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Venues";
-    await queryInterface.dropTable(options);
+    await queryInterface.dropTable("Venues");
   },
 };

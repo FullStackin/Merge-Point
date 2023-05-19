@@ -21,12 +21,14 @@ module.exports = {
           type: Sequelize.INTEGER,
           references: {
             model: "Events",
+            key: "id",
           },
         },
         userId: {
           type: Sequelize.INTEGER,
           references: {
             model: "Users",
+            key: "id",
           },
         },
         status: {
@@ -47,7 +49,6 @@ module.exports = {
     );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Attendances";
-    await queryInterface.dropTable(options);
+    await queryInterface.dropTable("Attendances");
   },
 };

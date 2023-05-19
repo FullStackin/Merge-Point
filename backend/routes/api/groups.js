@@ -1,6 +1,16 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
-const { Group, User, GroupImage, Venue } = require("../../db/models");
+const {
+  Group,
+  Membership,
+  GroupImage,
+  User,
+  Venue,
+  EventImage,
+  Event,
+  Attendance,
+} = require("../../db/models");
+
 const { requireAuth } = require("../../utils/auth.js");
 const { handleValidationErrors } = require("../../utils/validation.js");
 
@@ -156,4 +166,64 @@ router.delete("/:groupId", requireAuth, (req, res) => {
     });
 });
 
+router.get("/:groupId/venues", requireAuth, async (req, res, next) => {
+  const { groupId } = req.params;
+  const group = await Group.findByPk(groupId, {
+    include: Venue,
+  });
+  if (!group) {
+    return res.status(404).json({ message: "Group couldn't be found" });
+  }
+  const isOrganizer = group.organizerId === req.user.id;
+  const isMember = await Membership.findOne({
+    where: {
+      groupId,
+      userId: req.user.id,
+      status: "co-host",
+    },
+  });
+  if (!isOrganizer && !isMember) {
+    return res.status(403).json({ message: "Unauthorized action" });
+  }
+  const venues = group.Venues;
+  if (venues.length === 0) {
+    return res.status(404).json({ message: "No venues found for the group" });
+  }
+  res.status(200).json({ Venues: venues });
+});
+
+router.post(
+  "/:groupId/venues",
+  requireAuth,
+  handleValidationErrors,
+  async (req, res, next) => {
+    const { groupId } = req.params;
+    const { address, city, state, lat, lng } = req.body;
+    const group = await Group.findByPk(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: "Group couldn't be found" });
+    }
+    const isOrganizer = group.organizerId === req.user.id;
+    const isCoHost = await Membership.findOne({
+      where: {
+        groupId,
+        userId: req.user.id,
+        status: "co-host",
+      },
+    });
+    if (!isOrganizer && !isCoHost) {
+      return res.status(403).json({ message: "Unauthorized action" });
+    }
+    const venue = await Venue.create({
+      groupId,
+      address,
+      city,
+      state,
+      lat,
+      lng,
+    });
+    res.status(201).json(venue);
+  }
+);
 module.exports = router;
