@@ -270,4 +270,63 @@ router.get("/:groupId/events", async (req, res) => {
   }
 });
 
+router.post(
+  "/:groupId/events",
+  requireAuth,
+  handleValidationErrors,
+  async (req, res, next) => {
+    const { groupId } = req.params;
+    const {
+      venueId,
+      name,
+      type,
+      capacity,
+      price,
+      description,
+      startDate,
+      endDate,
+    } = req.body;
+
+    const group = await Group.findByPk(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: "Group couldn't be found" });
+    }
+
+    const isOrganizer = group.organizerId === req.user.id;
+    const isCoHost = await Membership.findOne({
+      where: {
+        groupId,
+        userId: req.user.id,
+        status: "co-host",
+      },
+    });
+
+    if (!isOrganizer && !isCoHost) {
+      return res.status(403).json({ message: "Unauthorized action" });
+    }
+
+    if (venueId) {
+      const venue = await Venue.findByPk(venueId);
+      if (!venue)
+        return res.status(404).json({ message: "Venue couldn't be found" });
+    }
+
+    const event = await Event.create({
+      groupId,
+      venueId,
+      name,
+      type,
+      capacity,
+      price,
+      description,
+      startDate,
+      endDate,
+    });
+
+    await group.addEvent(event);
+
+    res.status(201).json(event);
+  }
+);
 module.exports = router;

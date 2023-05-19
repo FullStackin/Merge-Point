@@ -35,7 +35,6 @@ router.put(
       await venue.update({ address, city, state, lat, lng });
       res.status(200).json(venue);
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ message: "Internal Server Error" });
     }
   }

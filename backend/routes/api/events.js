@@ -7,7 +7,7 @@ const {
   Attendance,
 } = require("../../db/models");
 
-const { requireAuth } = require("../../utils/auth.js");
+const { requireAuth, restoreUser } = require("../../utils/auth.js");
 const { handleValidationErrors } = require("../../utils/validation.js");
 
 router.get("/", async (req, res) => {
@@ -159,6 +159,71 @@ router.get("/:eventId", async (req, res) => {
   eventPojo.numAttending = numAttending;
 
   res.json(eventPojo);
+});
+
+router.post("/:eventId/images", requireAuth, async (req, res) => {
+  const { eventId } = req.params;
+  const { url, preview } = req.body;
+
+  // Check if the current user is authorized (attendee, host, or co-host)
+  if (!requireAuth(req.currentUser, eventId)) {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  // Find the event
+  const event = await Event.findByPk(eventId);
+  if (!event) {
+    return res.status(404).json({ message: "Event couldn't be found" });
+  }
+
+  // Create a new image for the event
+  const image = await Image.create({
+    eventId,
+    url,
+    preview,
+  });
+
+  res.status(200).json(image);
+});
+
+router.put("/:eventId", restoreUser, requireAuth, async (req, res) => {
+  const { eventId } = req.params;
+  const {
+    venueId,
+    name,
+    type,
+    capacity,
+    price,
+    description,
+    startDate,
+    endDate,
+  } = req.body;
+
+  // Check if the current user is authorized (organizer or co-host)
+  if (!requireAuth(req.currentUser, eventId)) {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  // Find the event
+  const event = await Event.findByPk(eventId);
+  if (!event) {
+    return res.status(404).json({ message: "Event couldn't be found" });
+  }
+
+  // Update the event with the provided data
+  event.venueId = venueId;
+  event.name = name;
+  event.type = type;
+  event.capacity = capacity;
+  event.price = price;
+  event.description = description;
+  event.startDate = startDate;
+  event.endDate = endDate;
+
+  // Save the updated event
+  await event.save();
+
+  res.status(200).json(event);
 });
 
 router.delete("/:eventId", requireAuth, async (req, res) => {
