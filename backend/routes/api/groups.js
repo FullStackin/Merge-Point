@@ -234,7 +234,7 @@ router.put("/:groupId", requireAuth, (req, res) => {
 
 router.delete("/:groupId", requireAuth, async (req, res) => {
   const groupId = req.params.groupId;
-  const group = await Group.findOne({ id: groupId });
+  const group = await Group.findOne({ where: { id: groupId } });
 
   if (!group) {
     res.status(404).json({ message: "Group couldn't be found" });
