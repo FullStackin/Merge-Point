@@ -12,7 +12,10 @@ const {
 } = require("../../db/models");
 
 const { requireAuth } = require("../../utils/auth.js");
-const { handleValidationErrors } = require("../../utils/validation.js");
+const {
+  handleValidationErrors,
+  getVenue,
+} = require("../../utils/validation.js");
 
 router.get("/", async (req, res) => {
   const groups = await Group.findAll({
@@ -182,12 +185,16 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
   try {
     const group = await Group.findByPk(groupId);
     if (!group) {
-      return handleValidationErrors(next, "Group couldn't be found");
+      const error = new Error("Group couldn't be found");
+      error.status = 404;
+      throw error;
     }
 
-    const isNotAuthorized = group.organizerId != userId;
+    const isNotAuthorized = group.organizerId !== userId;
     if (isNotAuthorized) {
-      return requireAuth(next);
+      const error = new Error("Forbidden");
+      error.status = 403;
+      throw error;
     }
 
     const newGroupImage = await GroupImage.create({ groupId, url, preview });
@@ -200,7 +207,9 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
     return res.json(createdImage);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(error.status || 500)
+      .json({ message: error.message || "Internal Server Error" });
   }
 });
 
@@ -260,10 +269,15 @@ router.delete("/:groupId", requireAuth, async (req, res) => {
   });
 });
 
-router.get("/:groupId/venues", requireAuth, async (req, res, next) => {
+router.get("/:groupId/venues", requireAuth, async (req, res) => {
   const { groupId } = req.params;
   const group = await Group.findByPk(groupId, {
-    include: Venue,
+    include: {
+      model: Venue,
+      attributes: {
+        exclude: ["updatedAt", "createdAt"],
+      },
+    },
   });
   if (!group) {
     return res.status(404).json({ message: "Group couldn't be found" });
@@ -277,28 +291,42 @@ router.get("/:groupId/venues", requireAuth, async (req, res, next) => {
     },
   });
   if (!isOrganizer && !isMember) {
-    return res.status(403).json({ message: "Unauthorized action" });
+    return res.status(403).json({ message: "Forbidden" });
   }
   const venues = group.Venues;
   if (venues.length === 0) {
     return res.status(404).json({ message: "No venues found for the group" });
   }
-  res.status(200).json({ Venues: venues });
+
+  res.json({ Venues: venues });
 });
 
 router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
   const userId = req.user.id;
   const groupId = req.params.groupId;
-  const { address, city, state, lat, lng } = req.body;
+  const { address, city, state, lat, lng } = getVenue(req.body);
 
-  const group = await Group.scope([
-    { method: ["includeAuthorization", userId] },
-  ]).findByPk(groupId);
+  const group = await Group.findByPk(groupId);
+  if (!group) {
+    const error = new Error("Group couldn't be found");
+    error.status = 404;
+    throw error;
+  }
 
-  if (!group) return handleValidationErrors(next, "Group");
+  const isCoHost = await Membership.findOne({
+    where: {
+      userId,
+      status: "co-host",
+      groupId,
+    },
+  });
 
-  const isNotAuthorized = group.organizerId != userId && !group["Members"][0];
-  if (isNotAuthorized) return req(next);
+  const isNotAuthorized = group.organizerId !== userId && !isCoHost;
+  if (isNotAuthorized) {
+    const error = new Error("Forbidden");
+    error.status = 403;
+    throw error;
+  }
 
   const venue = await Venue.create({
     groupId,
@@ -308,9 +336,12 @@ router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
     lat,
     lng,
   });
-  await group.addVenue(venue);
 
-  return res.json(venue);
+  const venueObject = venue.toJSON();
+  delete venueObject.updatedAt;
+  delete venueObject.createdAt;
+
+  return res.json(venueObject);
 });
 
 router.get("/:groupId/events", async (req, res, next) => {

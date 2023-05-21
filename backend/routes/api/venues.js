@@ -31,7 +31,7 @@ router.put("/:venueId", requireAuth, async (req, res) => {
     group.organizerId !== req.user.id &&
     (!membership || membership.status !== "co-host")
   ) {
-    res.status(401).json({ message: "Authentication required" });
+    res.status(401).json({ message: "Forbidden" });
   }
 
   const { address, city, state, lat, lng } = req.body;

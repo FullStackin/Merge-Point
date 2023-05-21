@@ -231,7 +231,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
   if (!event) {
     res.status(404);
     return res.json({
-      message: "Venue couldn't be found",
+      message: "Event couldn't be found",
     });
   }
 
@@ -340,7 +340,7 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
   if (!event)
     return res.status(404).json({ message: "Event couldn't be found" });
 
-  const group = await Group.findOne({ id: event.groupId });
+  const group = await Group.findOne({ where: { id: event.groupId } });
 
   const membership = await Membership.findOne({
     where: {
@@ -349,9 +349,9 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
     },
   });
 
-  if (group.organizerId != req.user.id) {
+  if (group.organizerId !== req.user.id) {
     if (!membership || membership.status !== "co-host") {
-      return res.status(401).json({ message: "Forbidden" });
+      return res.status(403).json({ message: "Forbidden" });
     }
   }
 
@@ -506,7 +506,18 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
     attendance.status = status;
     await attendance.save();
 
-    res.json(attendance);
+    await attendance.reload({
+      attributes: {
+        include: ["id"],
+      },
+    });
+
+    res.json({
+      id: attendance.id,
+      eventId: attendance.eventId,
+      userId: attendance.userId,
+      status: attendance.status,
+    });
   } catch (error) {
     return sendErrorResponse(
       res,
@@ -517,11 +528,11 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
 });
 
 async function findEventById(id) {
-  return Event.findByPk(id);
+  return await Event.findByPk(id);
 }
 
 async function findGroupById(id) {
-  return Group.findByPk(id);
+  return await Group.findByPk(id);
 }
 
 async function findMembership(userId, groupId, status) {
@@ -544,7 +555,7 @@ async function findAttendanceByUserIdAndEventId(userId, eventId) {
 }
 
 function isAuthorized(group, membership, userId) {
-  return group.organizerId !== userId && !membership;
+  return group.organizerId === userId || membership;
 }
 
 function sendErrorResponse(res, statusCode, message) {
