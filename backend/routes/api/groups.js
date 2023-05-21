@@ -236,6 +236,10 @@ router.delete("/:groupId", requireAuth, async (req, res) => {
   const groupId = req.params.groupId;
   const group = await Group.findOne({ id: groupId });
 
+  if (!group) {
+    res.status(404).json({ message: "Group couldn't be found" });
+  }
+
   const membership = await Membership.findOne({
     where: {
       groupId: groupId,
