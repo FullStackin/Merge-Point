@@ -58,7 +58,13 @@ router.get("/current", requireAuth, async (req, res) => {
   const userId = req.user.id;
 
   const groups = await Group.findAll({
-    where: { [Op.or]: [{ organizerId: userId }] },
+    where: {
+      [Op.or]: [
+        { organizerId: userId },
+        { "$Organizer.id$": userId },
+        { "$Users.id$": userId },
+      ],
+    },
     include: [
       {
         model: User,
@@ -67,30 +73,86 @@ router.get("/current", requireAuth, async (req, res) => {
       },
       {
         model: User,
-        through: { attributes: [] },
+        through: {
+          attributes: [],
+        },
         as: "Users",
         attributes: [],
+      },
+      {
+        model: GroupImage,
+        where: {
+          preview: true,
+        },
+        attributes: ["url"],
+        required: false,
       },
     ],
   });
 
-  res.json(groups);
+  const newGroups = await Promise.all(
+    groups.map(async (group) => {
+      const groupJson = group.toJSON();
+      const numMembers = await Membership.count({
+        where: {
+          groupId: groupJson.id,
+          status: {
+            [Op.in]: ["co-host", "member"],
+          },
+        },
+      });
+
+      const { url } =
+        groupJson.GroupImages && groupJson.GroupImages[0]
+          ? groupJson.GroupImages[0]
+          : { url: null };
+
+      return {
+        ...groupJson,
+        numMembers,
+        previewImage: url,
+        GroupImages: undefined,
+      };
+    })
+  );
+
+  res.json({ Groups: newGroups });
 });
 
-router.get("/:groupId", (req, res) => {
-  const groupId = req.params.groupId;
+router.get("/:groupId", async (req, res) => {
+  try {
+    const groupId = req.params.groupId;
 
-  Group.findByPk(groupId, { include: [GroupImage, Venue] })
-    .then((group) => {
-      if (group) {
-        res.status(200).json(group);
-      } else {
-        res.status(404).json({ message: "Group couldn't be found" });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Internal Server Error" });
+    const group = await Group.findByPk(groupId, {
+      include: [GroupImage, Venue, Membership],
     });
+
+    if (group) {
+      const numMembers = group.Memberships.length; // Calculate the number of members
+
+      const successBody = {
+        id: group.id,
+        organizerId: group.organizerId,
+        name: group.name,
+        about: group.about,
+        type: group.type,
+        private: group.private,
+        city: group.city,
+        state: group.state,
+        createdAt: group.createdAt,
+        updatedAt: group.updatedAt,
+        numMembers: numMembers, // Include the numMembers property
+        GroupImages: group.GroupImages,
+        Organizer: group.Organizer,
+        Venues: group.Venues,
+      };
+      res.status(200).json(successBody);
+    } else {
+      res.status(404).json({ message: "Group couldn't be found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 router.post("/", requireAuth, handleValidationErrors, async (req, res) => {
@@ -112,46 +174,35 @@ router.post("/", requireAuth, handleValidationErrors, async (req, res) => {
   }
 });
 
-router.post("/:groupId/images", async (req, res) => {
-  const { user } = req;
+router.post("/:groupId/images", requireAuth, async (req, res, next) => {
+  const { groupId } = req.params;
+  const { id: userId } = req.user;
+  const { url, preview } = req.body;
 
-  if (user) {
-    const group = await Group.findByPk(req.params.groupId);
+  try {
+    const group = await Group.findByPk(groupId);
     if (!group) {
-      res.status(404);
-      return res.json({
-        message: "Group couldn't be found",
-      });
-    } else if (user.id != group.organizerId) {
-      res.status(403);
-      return res.json({
-        message: "Forbidden",
-      });
+      return handleValidationErrors(next, "Group couldn't be found");
     }
-    const { url, preview } = req.body;
-    let newGroupImage = await GroupImage.create({
-      url,
-      preview,
-      groupId: req.params.groupId,
-    })
-      .then(async (newImage) => {
-        newGroupImage = await GroupImage.findOne({
-          where: {
-            id: newImage.id,
-          },
-          attributes: ["id", "url", "preview"],
-        });
-        return res.json(newGroupImage);
-      })
-      .catch(() => {});
-  } else {
-    res.status(401);
-    res.json({
-      message: "Authentication required",
+
+    const isNotAuthorized = group.organizerId != userId;
+    if (isNotAuthorized) {
+      return requireAuth(next);
+    }
+
+    const newGroupImage = await GroupImage.create({ groupId, url, preview });
+    await group.addGroupImage(newGroupImage);
+
+    const createdImage = await GroupImage.findByPk(newGroupImage.id, {
+      attributes: ["id", "url", "preview"],
     });
+
+    return res.json(createdImage);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 
 router.put("/:groupId", requireAuth, (req, res) => {
   const groupId = req.params.groupId;
@@ -237,37 +288,40 @@ router.get("/:groupId/venues", requireAuth, async (req, res, next) => {
 router.post(
   "/:groupId/venues",
   requireAuth,
-  handleValidationErrors,
   async (req, res, next) => {
-    const { groupId } = req.params;
-    const { address, city, state, lat, lng } = req.body;
-    const group = await Group.findByPk(groupId);
+    try {
+      const userId = req.user.id;
+      const groupId = req.params.groupId;
+      const { address, city, state, lat, lng } = req.body;
 
-    if (!group) {
-      return res.status(404).json({ message: "Group couldn't be found" });
-    }
-    const isOrganizer = group.organizerId === req.user.id;
-    const isCoHost = await Membership.findOne({
-      where: {
+      const group = await Group.findByPk(groupId);
+
+      if (!group) {
+        return res.status(404).json({ message: "Group couldn't be found" });
+      }
+
+      const isNotAuthorized =
+        group.organizerId !== userId && !group.Members[0];
+      if (isNotAuthorized) {
+        return res.status(403).json({ message: "Unauthorized action" });
+      }
+
+      const venue = await Venue.create({
         groupId,
-        userId: req.user.id,
-        status: "co-host",
-      },
-    });
-    if (!isOrganizer && !isCoHost) {
-      return res.status(403).json({ message: "Unauthorized action" });
+        address,
+        city,
+        state,
+        lat,
+        lng,
+      });
+
+      return res.status(201).json(venue);
+    } catch (error) {
+      return next(error);
     }
-    const venue = await Venue.create({
-      groupId,
-      address,
-      city,
-      state,
-      lat,
-      lng,
-    });
-    res.status(201).json(venue);
   }
 );
+
 
 router.get("/:groupId/events", async (req, res) => {
   const { groupId } = req.params;
@@ -416,7 +470,7 @@ router.get("/:groupId/members", async (req, res) => {
     ...(isOrganizerOrCoHost ? {} : { status: { [Op.in]: membershipStatus } }),
   };
 
-  const oMembers = await Membership.findAll({
+  const myMembers = await Membership.findAll({
     attributes: {
       exclude: ["createdAt", "updatedAt"],
     },
@@ -425,7 +479,7 @@ router.get("/:groupId/members", async (req, res) => {
 
   const Members = [];
 
-  for (const member of oMembers) {
+  for (const member of myMembers) {
     const user = await User.findOne({
       where: {
         id: member.userId,
