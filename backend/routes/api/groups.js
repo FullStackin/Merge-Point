@@ -112,27 +112,46 @@ router.post("/", requireAuth, handleValidationErrors, async (req, res) => {
   }
 });
 
-router.post("/:groupId/images", requireAuth, async (req, res) => {
-  try {
-    const groupId = req.params.groupId;
-    const imageData = req.body;
+router.post("/:groupId/images", async (req, res) => {
+  const { user } = req;
 
-    const group = await Group.findByPk(groupId);
-
-    if (group) {
-      if (group.organizerId === req.user.id) {
-        const image = await GroupImage.create({ groupId, ...imageData });
-        res.status(201).json(image);
-      } else {
-        res.status(404).json({ message: "Group couldn't be found" });
-      }
-    } else {
-      res.status(403).json({ message: "Forbidden" });
+  if (user) {
+    const group = await Group.findByPk(req.params.groupId);
+    if (!group) {
+      res.status(404);
+      return res.json({
+        message: "Group couldn't be found",
+      });
+    } else if (user.id != group.organizerId) {
+      res.status(403);
+      return res.json({
+        message: "Forbidden",
+      });
     }
-  } catch (err) {
-    res.status(500).json({ message: "Internal Server Error" });
+    const { url, preview } = req.body;
+    let newGroupImage = await GroupImage.create({
+      url,
+      preview,
+      groupId: req.params.groupId,
+    })
+      .then(async (newImage) => {
+        newGroupImage = await GroupImage.findOne({
+          where: {
+            id: newImage.id,
+          },
+          attributes: ["id", "url", "preview"],
+        });
+        return res.json(newGroupImage);
+      })
+      .catch(() => {});
+  } else {
+    res.status(401);
+    res.json({
+      message: "Authentication required",
+    });
   }
 });
+
 
 router.put("/:groupId", requireAuth, (req, res) => {
   const groupId = req.params.groupId;
