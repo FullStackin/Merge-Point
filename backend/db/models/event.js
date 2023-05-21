@@ -13,8 +13,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "eventId",
         otherKey: "userId",
       });
-      Event.belongsTo(models.Venue);
-      Event.belongsTo(models.Group);
+      Event.belongsTo(models.Venue, {
+        foreignKey: "venueId",
+      });
+      Event.belongsTo(models.Group, {
+        foreignKey: "groupId",
+      });
     }
   }
   Event.init(
