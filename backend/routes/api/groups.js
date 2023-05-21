@@ -285,43 +285,32 @@ router.get("/:groupId/venues", requireAuth, async (req, res, next) => {
   res.status(200).json({ Venues: venues });
 });
 
-router.post(
-  "/:groupId/venues",
-  requireAuth,
-  async (req, res, next) => {
-    try {
-      const userId = req.user.id;
-      const groupId = req.params.groupId;
-      const { address, city, state, lat, lng } = req.body;
+router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
+  const userId = req.user.id;
+  const groupId = req.params.groupId;
+  const { address, city, state, lat, lng } = req.body;
 
-      const group = await Group.findByPk(groupId);
+  const group = await Group.scope([
+    { method: ["includeAuthorization", userId] },
+  ]).findByPk(groupId);
 
-      if (!group) {
-        return res.status(404).json({ message: "Group couldn't be found" });
-      }
+  if (!group) return handleValidationErrors(next, "Group");
 
-      const isNotAuthorized =
-        group.organizerId !== userId && !group.Members[0];
-      if (isNotAuthorized) {
-        return res.status(403).json({ message: "Unauthorized action" });
-      }
+  const isNotAuthorized = group.organizerId != userId && !group["Members"][0];
+  if (isNotAuthorized) return req(next);
 
-      const venue = await Venue.create({
-        groupId,
-        address,
-        city,
-        state,
-        lat,
-        lng,
-      });
+  const venue = await Venue.create({
+    groupId,
+    address,
+    city,
+    state,
+    lat,
+    lng,
+  });
+  await group.addVenue(venue);
 
-      return res.status(201).json(venue);
-    } catch (error) {
-      return next(error);
-    }
-  }
-);
-
+  return res.json(venue);
+});
 
 router.get("/:groupId/events", async (req, res) => {
   const { groupId } = req.params;

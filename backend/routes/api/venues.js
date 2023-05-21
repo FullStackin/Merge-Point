@@ -1,43 +1,72 @@
-const { Venue, Group } = require("../../db/models");
-const router = require("express").Router();
+const express = require("express");
+var validator = require("validator");
+
+const { Group, Membership, Venue } = require("../../db/models");
 
 const { requireAuth } = require("../../utils/auth.js");
-const { handleValidationErrors } = require("../../utils/validation.js");
+const router = express.Router();
 
-router.put(
-  "/:venueId",
-  requireAuth,
-  handleValidationErrors,
-  async (req, res) => {
-    const { venueId } = req.params;
-    const { address, city, state, lat, lng } = req.body;
+router.put("/:venueId", requireAuth, async (req, res) => {
+  const venue = await Venue.findOne({
+    where: { id: req.params.venueId },
+    attributes: { exclude: ["updatedAt", "createdAt"] },
+  });
 
-    try {
-      const venue = await Venue.findByPk(venueId);
-      if (!venue) {
-        return res.status(404).json({ message: "Venue not found" });
-      }
-
-      const group = await Group.findByPk(venue.groupId);
-      if (!group) {
-        return res.status(404).json({ message: "Group not found" });
-      }
-
-      const isOrganizer = group.organizerId === req.user.id;
-      const isCoHost = await group.hasMembership(req.user.id, {
-        through: { status: "co-host", userId: req.user.id, groupId: group.id },
-      });
-
-      if (!isOrganizer && !isCoHost) {
-        return res.status(403).json({ message: "Unauthorized action" });
-      }
-
-      await venue.update({ address, city, state, lat, lng });
-      res.status(200).json(venue);
-    } catch (err) {
-      return res.status(500).json({ message: "Internal Server Error" });
-    }
+  if (!venue) {
+    res.status(404).send("Venue couldn't be found");
   }
-);
+
+  const group = await Group.findOne({
+    where: { id: venue.groupId },
+  });
+
+  const membership = await Membership.findOne({
+    where: {
+      groupId: venue.groupId,
+      userId: req.user.id,
+    },
+  });
+
+  if (
+    group.organizerId !== req.user.id &&
+    (!membership || membership.status !== "co-host")
+  ) {
+    res.status(401).json({ message: "Authentication required" });
+  }
+
+  const { address, city, state, lat, lng } = req.body;
+  const errorResult = { message: "Bad Request", errors: {} };
+
+  if (!address) {
+    errorResult.errors.address = "Street address is required";
+  }
+
+  if (!city) {
+    errorResult.errors.city = "City is required";
+  }
+
+  if (!state) {
+    errorResult.errors.state = "State is required";
+  }
+
+  if (!validator.isLatLong(`${lat},${lng}`)) {
+    errorResult.errors.lat = "Latitude is not valid";
+    errorResult.errors.lng = "Longitude is not valid";
+  }
+
+  if (Object.keys(errorResult.errors).length) {
+    res.status(400).json(errorResult);
+  }
+
+  venue.address = address;
+  venue.city = city;
+  venue.state = state;
+  venue.lat = lat;
+  venue.lng = lng;
+
+  await venue.save();
+
+  res.json(venue);
+});
 
 module.exports = router;
