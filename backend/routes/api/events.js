@@ -349,8 +349,6 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
     },
   });
 
-  // return res.json({ group, membership });
-
   if (group.organizerId != req.user.id) {
     if (!membership || membership.status !== "co-host") {
       return res.status(401).json({ message: "Forbidden" });

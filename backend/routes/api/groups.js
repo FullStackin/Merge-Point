@@ -232,31 +232,28 @@ router.put("/:groupId", requireAuth, (req, res) => {
     });
 });
 
-router.delete("/:groupId", requireAuth, (req, res) => {
+router.delete("/:groupId", requireAuth, async (req, res) => {
   const groupId = req.params.groupId;
+  const group = await Group.findOne({ id: groupId });
 
-  Group.findByPk(groupId)
-    .then((group) => {
-      if (group) {
-        if (group.organizerId === req.user.id) {
-          group
-            .destroy()
-            .then(() => {
-              res.status(200).json({ message: "Successfully deleted" });
-            })
-            .catch((error) => {
-              res.status(500).json({ message: "Internal Server Error" });
-            });
-        } else {
-          res.status(403).json({ message: "Forbidden" });
-        }
-      } else {
-        res.status(404).json({ message: "Group couldn't be found" });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Internal Server Error" });
-    });
+  const membership = await Membership.findOne({
+    where: {
+      groupId: groupId,
+      userId: req.user.id,
+    },
+  });
+
+  if (group.organizerId != req.user.id) {
+    if (!membership || membership.status !== "co-host") {
+      return res.status(401).json({ message: "Forbidden" });
+    }
+  }
+
+  await group.destroy();
+
+  res.json({
+    message: "Successfully deleted",
+  });
 });
 
 router.get("/:groupId/venues", requireAuth, async (req, res, next) => {
