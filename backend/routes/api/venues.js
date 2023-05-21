@@ -13,7 +13,7 @@ router.put("/:venueId", requireAuth, async (req, res) => {
   });
 
   if (!venue) {
-    res.status(404).send("Venue couldn't be found");
+    res.status(404).json({ message: "Venue couldn't be found" });
   }
 
   const group = await Group.findOne({

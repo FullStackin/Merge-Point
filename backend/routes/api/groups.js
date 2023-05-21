@@ -312,7 +312,7 @@ router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
   return res.json(venue);
 });
 
-router.get("/:groupId/events", async (req, res) => {
+router.get("/:groupId/events", async (req, res, next) => {
   const { groupId } = req.params;
 
   try {
@@ -331,7 +331,13 @@ router.get("/:groupId/events", async (req, res) => {
     });
 
     if (events.length === 0) {
-      return entityNotFound(res, "Group");
+      const group = await Group.findByPk(groupId);
+      if (!group) {
+        error = new Error("Group couldn't be found.");
+        error.status = 404;
+        error.title = "Resource couldn't be found.";
+        return next(error);
+      }
     }
 
     const eventsArr = [];
@@ -359,10 +365,11 @@ router.get("/:groupId/events", async (req, res) => {
     }
 
     res.json({ Events: eventsArr });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "An error occurred while retrieving events." });
+  } catch (err) {
+    const error = new Error("Group couldn't be found.");
+    error.status = 404;
+    error.title = "Resource couldn't be found.";
+    return next(error);
   }
 });
 

@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       groupId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        onDelete: "Cascade",
       },
       name: {
         type: DataTypes.STRING,

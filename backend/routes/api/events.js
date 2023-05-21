@@ -122,7 +122,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:eventId", async (req, res) => {
+router.get("/:eventId", async (req, res, next) => {
   const { eventId } = req.params;
 
   const event = await Event.findByPk(eventId, {
@@ -146,7 +146,10 @@ router.get("/:eventId", async (req, res) => {
   });
 
   if (!event) {
-    return entityNotFound(res, "Event");
+    const error = new Error("Event couldn't be found.");
+    error.status = 404;
+    error.title = "Resource couldn't be found.";
+    return next(error);
   }
 
   const eventPojo = {
@@ -228,7 +231,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
   if (!event) {
     res.status(404);
     return res.json({
-      message: "Event couldn't be found",
+      message: "Venue couldn't be found",
     });
   }
 
@@ -346,13 +349,15 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
     },
   });
 
-  if (group.organizerId !== req.user.id) {
+  // return res.json({ group, membership });
+
+  if (group.organizerId != req.user.id) {
     if (!membership || membership.status !== "co-host") {
       return res.status(401).json({ message: "Forbidden" });
     }
   }
 
-  event.destroy();
+  await event.destroy();
 
   res.json({
     message: "Successfully deleted",
@@ -411,7 +416,7 @@ router.get("/:eventId/attendees", async (req, res) => {
     }
   }
 
-  res.json(Attendees);
+  res.json({ Attendees: Attendees });
 });
 
 router.post("/:eventId/attendance", requireAuth, async (req, res) => {
