@@ -274,11 +274,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
     const venue = await Venue.findByPk(venueId);
     if (!venue) errResult.errors.venueId = "Venue does not exist";
   }
-
-  let validPrice = price.toString().split(".");
-  if (Number.isNaN(price) || validPrice[1].length > 2) {
-    errResult.errors.price = "Price is invalid";
-  }
+  
   if (!name || name.length < 5) {
     errResult.errors.name = "Name must be at least 5 characters";
   }
