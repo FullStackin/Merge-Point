@@ -127,11 +127,20 @@ router.get("/:groupId", async (req, res) => {
     const groupId = req.params.groupId;
 
     const group = await Group.findByPk(groupId, {
-      include: [GroupImage, Venue, Membership],
+      include: [
+        { model: GroupImage },
+        { model: Venue },
+        { model: Membership },
+        {
+          model: User,
+          as: "Organizer",
+          attributes: ["id", "firstName", "lastName"],
+        },
+      ],
     });
 
     if (group) {
-      const numMembers = group.Memberships.length; // Calculate the number of members
+      const numMembers = group.Memberships.length;
 
       const successBody = {
         id: group.id,
@@ -144,11 +153,33 @@ router.get("/:groupId", async (req, res) => {
         state: group.state,
         createdAt: group.createdAt,
         updatedAt: group.updatedAt,
-        numMembers: numMembers, // Include the numMembers property
-        GroupImages: group.GroupImages,
-        Organizer: group.Organizer,
-        Venues: group.Venues,
+        numMembers: numMembers,
+        GroupImages: group.GroupImages.map((image) => ({
+          id: image.id,
+          url: image.url,
+          preview: image.preview,
+        })),
+        Organizer: {
+          id: group.Organizer.id,
+          firstName: group.Organizer.firstName,
+          lastName: group.Organizer.lastName,
+        },
+        Venues: group.Venues.map((venue) => ({
+          id: venue.id,
+          groupId: venue.groupId,
+          address: venue.address,
+          city: venue.city,
+          state: venue.state,
+          lat: venue.lat,
+          lng: venue.lng,
+        })),
       };
+
+      successBody.Venues.forEach((venue) => {
+        delete venue.createdAt;
+        delete venue.updatedAt;
+      });
+
       res.status(200).json(successBody);
     } else {
       res.status(404).json({ message: "Group couldn't be found" });
@@ -169,11 +200,70 @@ router.post("/", requireAuth, handleValidationErrors, async (req, res) => {
     city: req.body.city,
     state: req.body.state,
   };
+
+  const validationErrors = {};
+
+  if (!groupData.name || groupData.name.length > 60) {
+    validationErrors.name = "Name must be 60 characters or less";
+  }
+
+  if (!groupData.about || groupData.about.length < 50) {
+    validationErrors.about = "About must be 50 characters or more";
+  }
+
+  if (!groupData.type || !["Online", "In person"].includes(groupData.type)) {
+    validationErrors.type = "Type must be 'Online' or 'In person'";
+  }
+
+  if (!groupData.private || typeof groupData.private !== "boolean") {
+    validationErrors.private = "Private must be a boolean";
+  }
+
+  if (!groupData.city) {
+    validationErrors.city = "City is required";
+  }
+
+  if (!groupData.state) {
+    validationErrors.state = "State is required";
+  }
+
+  if (Object.keys(validationErrors).length > 0) {
+    res.status(400).json({
+      message: "Bad Request",
+      errors: validationErrors,
+    });
+    return;
+  }
+
   try {
     const group = await Group.create(groupData);
-    res.status(201).json(group);
+    res.status(201).json({
+      id: group.id,
+      organizerId: group.organizerId,
+      name: group.name,
+      about: group.about,
+      type: group.type,
+      private: group.private,
+      city: group.city,
+      state: group.state,
+      createdAt: group.createdAt,
+      updatedAt: group.updatedAt,
+    });
   } catch (error) {
-    res.status(400).json({ message: "Bad Request" });
+    if (error.name === "SequelizeValidationError") {
+      const errors = {};
+
+      for (let field of Object.keys(error.errors)) {
+        errors[field] = error.errors[field].message;
+      }
+
+      res.status(400).json({
+        message: "Validation error",
+        errors,
+      });
+    } else {
+      res.status(400).json({ message: "Bad Request" });
+    }
   }
 });
 
@@ -212,34 +302,86 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
       .json({ message: error.message || "Internal Server Error" });
   }
 });
+router.put(
+  "/:groupId",
+  requireAuth,
+  handleValidationErrors,
+  async (req, res) => {
+    const groupId = req.params.groupId;
+    const groupData = {
+      name: req.body.name,
+      about: req.body.about,
+      type: req.body.type,
+      private: req.body.private,
+      city: req.body.city,
+      state: req.body.state,
+    };
 
-router.put("/:groupId", requireAuth, (req, res) => {
-  const groupId = req.params.groupId;
-  const groupData = req.body;
+    const validationErrors = {};
 
-  Group.findByPk(groupId)
-    .then((group) => {
-      if (group) {
-        if (group.organizerId === req.user.id) {
-          group
-            .update(groupData)
-            .then((updatedGroup) => {
-              res.status(200).json(updatedGroup);
-            })
-            .catch((error) => {
-              res.status(400).json({ message: "Bad Request" });
-            });
-        } else {
-          res.status(403).json({ message: "Forbidden" });
-        }
-      } else {
+    if (!groupData.name || groupData.name.length > 60) {
+      validationErrors.name = "Name must be 60 characters or less";
+    }
+
+    if (!groupData.about || groupData.about.length < 50) {
+      validationErrors.about = "About must be 50 characters or more";
+    }
+
+    if (!groupData.type || !["Online", "In person"].includes(groupData.type)) {
+      validationErrors.type = "Type must be 'Online' or 'In person'";
+    }
+
+    if (!groupData.private || typeof groupData.private !== "boolean") {
+      validationErrors.private = "Private must be a boolean";
+    }
+
+    if (!groupData.city) {
+      validationErrors.city = "City is required";
+    }
+
+    if (!groupData.state) {
+      validationErrors.state = "State is required";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      res.status(400).json({
+        message: "Bad Request",
+        errors: validationErrors,
+      });
+      return;
+    }
+
+    try {
+      const group = await Group.findByPk(groupId);
+      if (!group) {
         res.status(404).json({ message: "Group couldn't be found" });
+        return;
       }
-    })
-    .catch((error) => {
+
+      if (group.organizerId !== req.user.id) {
+        res.status(403).json({ message: "Forbidden" });
+        return;
+      }
+
+      await group.update(groupData);
+
+      res.status(200).json({
+        id: group.id,
+        organizerId: group.organizerId,
+        name: group.name,
+        about: group.about,
+        type: group.type,
+        private: group.private,
+        city: group.city,
+        state: group.state,
+        createdAt: group.createdAt,
+        updatedAt: group.updatedAt,
+      });
+    } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });
-    });
-});
+    }
+  }
+);
 
 router.delete("/:groupId", requireAuth, async (req, res) => {
   const groupId = req.params.groupId;
@@ -304,13 +446,11 @@ router.get("/:groupId/venues", requireAuth, async (req, res) => {
 router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
   const userId = req.user.id;
   const groupId = req.params.groupId;
-  const { address, city, state, lat, lng } = getVenue(req.body);
+  const { address, city, state, lat, lng } = req.body;
 
   const group = await Group.findByPk(groupId);
   if (!group) {
-    const error = new Error("Group couldn't be found");
-    error.status = 404;
-    throw error;
+    return res.status(404).json({ message: "Group couldn't be found" });
   }
 
   const isCoHost = await Membership.findOne({
@@ -323,9 +463,36 @@ router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
 
   const isNotAuthorized = group.organizerId !== userId && !isCoHost;
   if (isNotAuthorized) {
-    const error = new Error("Forbidden");
-    error.status = 403;
-    throw error;
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  const errors = {};
+
+  if (!address) {
+    errors.address = "Street address is required";
+  }
+
+  if (!city) {
+    errors.city = "City is required";
+  }
+
+  if (!state) {
+    errors.state = "State is required";
+  }
+
+  if (!lat) {
+    errors.lat = "Latitude is not valid";
+  }
+
+  if (!lng) {
+    errors.lng = "Longitude is not valid";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json({
+      message: "Bad Request",
+      errors,
+    });
   }
 
   const venue = await Venue.create({
@@ -337,11 +504,17 @@ router.post("/:groupId/venues", requireAuth, async (req, res, next) => {
     lng,
   });
 
-  const venueObject = venue.toJSON();
-  delete venueObject.updatedAt;
-  delete venueObject.createdAt;
+  const venueObject = {
+    id: venue.id,
+    groupId: venue.groupId,
+    address: venue.address,
+    city: venue.city,
+    state: venue.state,
+    lat: venue.lat,
+    lng: venue.lng,
+  };
 
-  return res.json(venueObject);
+  return res.status(200).json(venueObject);
 });
 
 router.get("/:groupId/events", async (req, res, next) => {
@@ -441,10 +614,51 @@ router.post(
       return res.status(403).json({ message: "Unauthorized action" });
     }
 
-    if (venueId) {
+    const errors = {};
+
+    if (!venueId) {
+      errors.venueId = "Venue ID is required";
+    } else {
       const venue = await Venue.findByPk(venueId);
-      if (!venue)
-        return res.status(404).json({ message: "Venue couldn't be found" });
+      if (!venue) {
+        errors.venueId = "Venue does not exist";
+      }
+    }
+
+    if (!name || name.length < 5) {
+      errors.name = "Name must be at least 5 characters";
+    }
+
+    if (type !== "Online" && type !== "In person") {
+      errors.type = "Type must be Online or In person";
+    }
+
+    if (!Number.isInteger(capacity)) {
+      errors.capacity = "Capacity must be an integer";
+    }
+
+    if (typeof price !== "number" || isNaN(price)) {
+      errors.price = "Price is invalid";
+    }
+
+    if (!description) {
+      errors.description = "Description is required";
+    }
+
+    const currentDate = new Date();
+    const parsedStartDate = new Date(startDate);
+    const parsedEndDate = new Date(endDate);
+
+    if (parsedStartDate <= currentDate) {
+      errors.startDate = "Start date must be in the future";
+    }
+
+    if (parsedEndDate <= parsedStartDate) {
+      errors.endDate = "End date is less than start date";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({ message: "Bad Request", errors });
     }
 
     const event = await Event.create({
@@ -461,7 +675,20 @@ router.post(
 
     await group.addEvent(event);
 
-    res.status(201).json(event);
+    const response = {
+      id: event.id,
+      groupId: event.groupId,
+      venueId: event.venueId,
+      name: event.name,
+      type: event.type,
+      capacity: event.capacity,
+      price: event.price,
+      description: event.description,
+      startDate: event.startDate,
+      endDate: event.endDate,
+    };
+
+    res.status(201).json(response);
   }
 );
 

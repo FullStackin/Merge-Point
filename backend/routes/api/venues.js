@@ -13,7 +13,7 @@ router.put("/:venueId", requireAuth, async (req, res) => {
   });
 
   if (!venue) {
-    res.status(404).json({ message: "Venue couldn't be found" });
+    return res.status(404).json({ message: "Venue couldn't be found" });
   }
 
   const group = await Group.findOne({
@@ -31,7 +31,7 @@ router.put("/:venueId", requireAuth, async (req, res) => {
     group.organizerId !== req.user.id &&
     (!membership || membership.status !== "co-host")
   ) {
-    res.status(401).json({ message: "Forbidden" });
+    return res.status(401).json({ message: "Forbidden" });
   }
 
   const { address, city, state, lat, lng } = req.body;
@@ -54,8 +54,8 @@ router.put("/:venueId", requireAuth, async (req, res) => {
     errorResult.errors.lng = "Longitude is not valid";
   }
 
-  if (Object.keys(errorResult.errors).length) {
-    res.status(400).json(errorResult);
+  if (Object.keys(errorResult.errors).length > 0) {
+    return res.status(400).json(errorResult);
   }
 
   venue.address = address;
@@ -66,7 +66,17 @@ router.put("/:venueId", requireAuth, async (req, res) => {
 
   await venue.save();
 
-  res.json(venue);
+  const venueObject = {
+    id: venue.id,
+    groupId: venue.groupId,
+    address: venue.address,
+    city: venue.city,
+    state: venue.state,
+    lat: venue.lat,
+    lng: venue.lng,
+  };
+
+  return res.json(venueObject);
 });
 
 module.exports = router;

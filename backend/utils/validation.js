@@ -21,6 +21,7 @@ const handleValidationErrors = (req, _res, next) => {
   next();
 };
 
+
 const getVenue = ({ address, city, state, lat, lng }) => {
   const errRes = {
     status: 400,
