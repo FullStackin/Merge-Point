@@ -1,8 +1,7 @@
-// frontend/src/components/LoginFormPage/index.js
 import React, { useState } from "react";
-import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import * as sessionActions from "../../store/session";
 import "./LoginForm.css";
 
 function LoginFormPage() {
@@ -26,12 +25,13 @@ function LoginFormPage() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="container">
+      <h1 className="title">Log In</h1>
+      <form className="form" onSubmit={handleSubmit}>
         <label>
           Username or Email
           <input
+            className="input"
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
@@ -41,16 +41,17 @@ function LoginFormPage() {
         <label>
           Password
           <input
+            className="input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        {errors.credential && <p className="error-message">{errors.credential}</p>}
+        <button className="button" type="submit">Log In</button>
       </form>
-    </>
+    </div>
   );
 }
 
