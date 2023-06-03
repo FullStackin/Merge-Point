@@ -37,6 +37,8 @@
     ]
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "redux-logger": "^3.0.6"
-  }
+  },
+  "proxy": "http://localhost:8000"
 }
