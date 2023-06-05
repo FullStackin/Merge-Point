@@ -1,16 +1,18 @@
 {
-  "name": "authenticate_me",
+  "name": "MergePoint",
   "version": "1.0.0",
   "description": "Database Schema Design",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "npm --prefix backend install backend",
+    "install": "npm --prefix backend install backend && npm --prefix frontend install frontend",
     "dev:backend": "npm install --prefix backend start",
+    "dev:frontend": "npm install --prefix frontend start",
     "sequelize": "npm run --prefix backend sequelize",
     "sequelize-cli": "npm run --prefix backend sequelize-cli",
     "start": "npm start --prefix backend",
-    "build": "npm run --prefix backend build"
+    "build": "npm run build --prefix backend",
+    "render-postbuild": "npm run build --prefix frontend"
   },
   "keywords": [],
   "author": "Omar",
