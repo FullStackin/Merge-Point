@@ -1,1 +1,9 @@
 /* TODO Add site wide styles */
+* {
+  font-family: "Gloock", serif;
+  font-weight: 100;
+}
+
+button {
+    padding: 0.3rem
+}
