@@ -12,10 +12,15 @@ li {
   margin: 0 10px;
 }
 
+.hidden {
+  display: none;
+}
+
 NavLink {
-  text-decoration: none;
-  color: #333;
+  color: black;
   font-weight: bold;
+  text-decoration: none;
+
 }
 
 NavLink.active {
