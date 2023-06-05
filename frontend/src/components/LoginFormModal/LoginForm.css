@@ -1,57 +1,39 @@
-.container {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.title {
-  margin-top: 1px;
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 10px;
-  text-align: center;
 }
 
-.form {
-  width: 300px;
-  margin: auto;
-  border: 1px solid black;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-  gap: 1rem;
+input[type="text"],
+input[type="password"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
 }
 
-.input {
-  width: 100%;
-  padding: 0.6rem;
-  border: 2px solid black;
-  font-size: 1rem;
-}
-
-.error-message {
-  color: rgb(255, 0, 0);
-  font-size: 1rem;
-  text-align: center;
-}
-
-.button {
-  width: 100%;
-}
-
-.button {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1rem;
-  background-color: #e32359;
-  color: white;
+button[type="submit"] {
+  padding: 12px 24px;
+  background-coor: #ff5722;
+  color: #fff;
   border: none;
   cursor: pointer;
+  font-size: 16px;
 }
 
-.button:hover {
-  background-color: #230000;
-}
-
-.button:active {
-  background-color: #230000;
+p {
+  color: red;
+  margin: 5px 0;
+  font-size: 14px;
 }
