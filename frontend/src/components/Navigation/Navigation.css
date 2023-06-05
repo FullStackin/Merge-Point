@@ -62,7 +62,8 @@ nav .profile-dropdown {
   display: none;
 }
 
-nav .profile-button:hover + .profile-dropdown {
+nav .profile-button:hover + .profile-dropdown,
+nav .profile-dropdown:hover {
   display: block;
 }
 
