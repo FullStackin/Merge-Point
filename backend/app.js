@@ -37,10 +37,6 @@ app.use(
 
 const routes = require("./routes");
 
-app.get("/", (req, res) => {
-  res.json("SUCESS!");
-});
-
 app.use(routes);
 
 app.use((_req, _res, next) => {
