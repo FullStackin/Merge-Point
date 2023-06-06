@@ -1,80 +1,131 @@
 import { csrfFetch } from "./csrf";
 
-const SET_USER = "session/setUser";
-const REMOVE_USER = "session/removeUser";
+// Action types
+const START_NEW_SESSION = "session/START_NEW_SESSION";
+const FETCH_SESSION = "session/FETCH_SESSION";
+const END_SESSION = "session/END_SESSION";
+const REGISTER_USER = "session/REGISTER_USER";
 
-const setUser = (user) => {
-  return {
-    type: SET_USER,
-    payload: user,
-  };
+// Action creators
+const startNewSession = (user) => ({
+  type: START_NEW_SESSION,
+  user,
+});
+
+const fetchSession = (user) => ({
+  type: FETCH_SESSION,
+  user,
+});
+
+const endSession = () => ({
+  type: END_SESSION,
+});
+
+const registerUser = (user) => ({
+  type: REGISTER_USER,
+  user,
+});
+
+export const createSessionThunk = (user) => async (dispatch) => {
+  try {
+    const response = await csrfFetch("/api/session", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    const { user: responseData } = await response.json();
+
+    if (response.ok) {
+      dispatch(startNewSession(responseData));
+    }
+
+    return responseData;
+  } catch (error) {
+    console.error("Failed to create session:", error);
+    throw error;
+  }
 };
 
-const removeUser = () => {
-  return {
-    type: REMOVE_USER,
-  };
+export const getSessionThunk = () => async (dispatch) => {
+  try {
+    const response = await fetch("/api/session");
+    const { user: responseData } = await response.json();
+
+    if (response.ok) {
+      dispatch(fetchSession(responseData));
+    }
+
+    return responseData;
+  } catch (error) {
+    console.error("Failed to fetch session:", error);
+    throw error;
+  }
 };
 
-export const login = (user) => async (dispatch) => {
-  const { credential, password } = user;
-  const response = await csrfFetch("/api/session", {
-    method: "POST",
-    body: JSON.stringify({
-      credential,
-      password,
-    }),
-  });
-  const data = await response.json();
-  dispatch(setUser(data.user));
-  return response;
+export const deleteSessionThunk = () => async (dispatch) => {
+  try {
+    const response = await csrfFetch("/api/session", {
+      method: "delete",
+    });
+    const responseData = await response.json();
+
+    if (response.ok) {
+      dispatch(endSession());
+    }
+
+    return responseData;
+  } catch (error) {
+    console.error("Failed to delete session:", error);
+    throw error;
+  }
 };
 
-export const signup = (user) => async (dispatch) => {
-  const { username, firstName, lastName, email, password } = user;
-  const response = await csrfFetch("/api/users", {
-    method: "POST",
-    body: JSON.stringify({
-      username,
-      firstName,
-      lastName,
-      email,
-      password,
-    }),
-  });
-  const data = await response.json();
-  dispatch(setUser(data.user));
-  return response;
+export const registerUserThunk = (user) => async (dispatch) => {
+  try {
+    const response = await csrfFetch("/api/users", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    const { user: responseData } = await response.json();
+
+    if (response.ok) {
+      dispatch(startNewSession(responseData));
+    }
+
+    return responseData;
+  } catch (error) {
+    console.error("Failed to create user:", error);
+    throw error;
+  }
 };
 
-export const logout = () => async (dispatch) => {
-  const response = await csrfFetch("/api/session", {
-    method: "DELETE",
-  });
-  dispatch(removeUser());
-  return response;
+// Initial state
+const initialState = {
+  user: null,
 };
 
-export const restoreUser = () => async (dispatch) => {
-  const response = await csrfFetch("/api/session");
-  const data = await response.json();
-  dispatch(setUser(data.user));
-  return response;
-};
-
-const initialState = { user: null };
-
+// Reducer
 const sessionReducer = (state = initialState, action) => {
-  let newState;
   switch (action.type) {
-    case SET_USER:
-      newState = Object.assign({}, state);
-      newState.user = action.payload;
-      return newState;
-    case REMOVE_USER:
-      newState = Object.assign({}, state);
-      newState.user = null;
-      return newState;
+    case START_NEW_SESSION:
+      return {
+        ...state,
+        user: action.user,
+      };
+    case FETCH_SESSION:
+      return {
+        ...state,
+        user: action.user,
+      };
+    case END_SESSION:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }

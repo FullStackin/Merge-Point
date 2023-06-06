@@ -1,21 +1,37 @@
-// frontend/src/App.js
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Switch, Route } from "react-router-dom";
-import * as sessionActions from "./store/session";
+import { getSessionThunk  } from "./store/session";
+
 import Navigation from "./components/Navigation";
+import ExploreGroupsPage from "./components/ExploreGroupsPage";
+import GroupsPages from "./components/GroupsPages";
+import HomePage from "./components/HomePage";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
+    dispatch(sessionActions.getSession()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Switch></Switch>}
+      {isLoaded && (
+        <Switch>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
+          <Route exact path="/groups">
+            <ExploreGroupsPage />
+          </Route>
+          <Route path="/groups/:groupId">
+            <GroupsPages />
+          </Route>
+        </Switch>
+      )}
     </>
   );
 }
