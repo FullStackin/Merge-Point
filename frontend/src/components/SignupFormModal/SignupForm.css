@@ -18,3 +18,66 @@
   border-radius: 10px;
   padding: 0.4rem 0.9rem;
 }
+
+
+
+/*
+.signup-box {
+  width: 400px;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
+
+.SignupFormModal__submit-btn {
+  padding: 10px;
+  background-color: #e32359;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px black;
+  cursor: pointer;
+}
+
+.SignupFormModal__submit-btn:disabled {
+  background-color: #ccc;
+}
+
+.SignupFormModal__errors {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Additional styles for SignupFormModal */
+/* .SignupFormModal__title {
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.SignupFormModal__form {
+  display: flex;
+  font-size: 12px;
+  flex-direction: column;
+  gap: 0.6rem;
+} */

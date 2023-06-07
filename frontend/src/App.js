@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getSessionThunk  } from "./store/session";
+import sessionReducer, { thunkGtSess } from "./store/session";
 
 import Navigation from "./components/Navigation";
 import ExploreGroupsPage from "./components/ExploreGroupsPage";
@@ -13,7 +13,7 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(sessionActions.getSession()).then(() => setIsLoaded(true));
+    dispatch(thunkGtSess()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (

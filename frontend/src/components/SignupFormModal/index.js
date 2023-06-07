@@ -1,9 +1,7 @@
-// frontend/src/components/SignupFormPage/index.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-// import * as sessionActions from "../../store/session";
-import { createUser } from "../../store/session";
+import { thunkRegUsr } from "../../store/session";
 
 import "./SignupForm.css";
 
@@ -16,14 +14,28 @@ function SignupFormModal() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [isEnabled, setIsEnabled] = useState(false);
   const { closeModal } = useModal();
+
+  useEffect(() => {
+    const isValid =
+      firstName &&
+      lastName &&
+      username &&
+      username.length >= 4 &&
+      password &&
+      password.length >= 6 &&
+      password === confirmPassword;
+
+    setIsEnabled(isValid);
+  }, [email, username, firstName, lastName, password, confirmPassword]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
-        sessionActions.signup({
+        thunkRegUsr({
           email,
           username,
           firstName,
@@ -109,7 +121,9 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button className="Submit" disabled={!isEnabled} type="submit">
+          Sign Up
+        </button>
       </form>
     </>
   );

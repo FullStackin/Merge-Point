@@ -1,32 +1,31 @@
 import { csrfFetch } from "./csrf";
 
 // Action types
-const START_NEW_SESSION = "session/START_NEW_SESSION";
+const START_SESSION = "session/START_SESSION";
 const FETCH_SESSION = "session/FETCH_SESSION";
 const END_SESSION = "session/END_SESSION";
 const REGISTER_USER = "session/REGISTER_USER";
 
-// Action creators
-const startNewSession = (user) => ({
-  type: START_NEW_SESSION,
+export const actionStNewSes = (user) => ({
+  type: START_SESSION,
   user,
 });
 
-const fetchSession = (user) => ({
+const actionFetchSes = (user) => ({
   type: FETCH_SESSION,
   user,
 });
 
-const endSession = () => ({
+const actionEndSes = () => ({
   type: END_SESSION,
 });
 
-const registerUser = (user) => ({
+const actionRegiUser = (user) => ({
   type: REGISTER_USER,
   user,
 });
 
-export const createSessionThunk = (user) => async (dispatch) => {
+export const thunkCrteSess = (user) => async (dispatch) => {
   try {
     const response = await csrfFetch("/api/session", {
       method: "post",
@@ -38,7 +37,7 @@ export const createSessionThunk = (user) => async (dispatch) => {
     const { user: responseData } = await response.json();
 
     if (response.ok) {
-      dispatch(startNewSession(responseData));
+      dispatch(actionStNewSes(responseData));
     }
 
     return responseData;
@@ -48,13 +47,13 @@ export const createSessionThunk = (user) => async (dispatch) => {
   }
 };
 
-export const getSessionThunk = () => async (dispatch) => {
+export const thunkGtSess = () => async (dispatch) => {
   try {
     const response = await fetch("/api/session");
     const { user: responseData } = await response.json();
 
     if (response.ok) {
-      dispatch(fetchSession(responseData));
+      dispatch(actionFetchSes(responseData));
     }
 
     return responseData;
@@ -64,7 +63,7 @@ export const getSessionThunk = () => async (dispatch) => {
   }
 };
 
-export const deleteSessionThunk = () => async (dispatch) => {
+export const thunkDtSess = () => async (dispatch) => {
   try {
     const response = await csrfFetch("/api/session", {
       method: "delete",
@@ -72,7 +71,7 @@ export const deleteSessionThunk = () => async (dispatch) => {
     const responseData = await response.json();
 
     if (response.ok) {
-      dispatch(endSession());
+      dispatch(actionEndSes());
     }
 
     return responseData;
@@ -82,7 +81,7 @@ export const deleteSessionThunk = () => async (dispatch) => {
   }
 };
 
-export const registerUserThunk = (user) => async (dispatch) => {
+export const thunkRegUsr = (user) => async (dispatch) => {
   try {
     const response = await csrfFetch("/api/users", {
       method: "post",
@@ -94,7 +93,7 @@ export const registerUserThunk = (user) => async (dispatch) => {
     const { user: responseData } = await response.json();
 
     if (response.ok) {
-      dispatch(startNewSession(responseData));
+      dispatch(actionRegiUser(responseData));
     }
 
     return responseData;
@@ -111,21 +110,24 @@ const initialState = {
 
 // Reducer
 const sessionReducer = (state = initialState, action) => {
+  let newState;
   switch (action.type) {
-    case START_NEW_SESSION:
-      return {
-        ...state,
-        user: action.user,
-      };
+    case START_SESSION:
+      newState = Object.assign({}, state);
+      newState.user = action.user;
+      return newState;
     case FETCH_SESSION:
-      return {
-        ...state,
-        user: action.user,
-      };
+      newState = Object.assign({}, state);
+      newState.user = action.user;
+      return newState;
     case END_SESSION:
-      return {
-        ...initialState,
-      };
+      newState = Object.assign({}, state);
+      newState.user = null;
+      return newState;
+    case REGISTER_USER:
+      newState = Object.assign({}, state);
+      newState.user = action.user;
+      return newState;
     default:
       return state;
   }

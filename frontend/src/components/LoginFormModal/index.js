@@ -1,6 +1,6 @@
 // frontend/src/components/LoginFormModal/index.js
 import React, { useState } from "react";
-import * as sessionActions from "../../store/session";
+import sessionReducer, { createSessionThunk } from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
@@ -15,7 +15,7 @@ function LoginFormModal() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password }))
+    return dispatch(sessionReducer.login({ credential, password }))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
