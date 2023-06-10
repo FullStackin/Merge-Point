@@ -13,9 +13,9 @@ module.exports = {
       [
         {
           organizerId: 1,
-          name: "MMA Mastery: Unleash Your Inner Champion",
+          name: "CodeCraft: Mastering the Art of Programming",
           about:
-            "Enjoy learning Mixed Martial Arts from top MMA coaches with over 20 years of experience training UFC fighters and Bellator champions. This class is designed to teach you the proper techniques and discipline required to become a true champion.",
+            "Enjoy learning computer programming from top experts with over 20 years of experience in coding for renowned software companies. This class is designed to teach you the proper techniques and discipline required to become a true coding champion.",
           type: "In person",
           private: false,
           city: "San Diego",
@@ -23,9 +23,9 @@ module.exports = {
         },
         {
           organizerId: 2,
-          name: "JavaScript Junction: Exploring the Power of JS",
+          name: "Python Pioneers: Exploring the Power of Python",
           about:
-            "Embark on a transformative journey, exploring the boundless power of JavaScript. Dive into innovative frameworks, unleash creativity, and collaborate on projects, fueling your passion for this dynamic language. Join our vibrant community today!",
+            "Embark on a transformative journey, exploring the boundless power of Python. Dive into innovative frameworks, unleash creativity, and collaborate on projects, fueling your passion for this dynamic programming language. Join our vibrant community today!",
           type: "Online",
           private: false,
           city: "San Diego",
@@ -33,9 +33,9 @@ module.exports = {
         },
         {
           organizerId: 3,
-          name: "Trailblazers: Conquer Nature's Challenges",
+          name: "ByteTrail: Conquer Coding Challenges",
           about:
-            "Experience the thrill of mountain biking in breathtaking landscapes. Explore rugged trails, conquer challenging terrains, and unleash your adrenaline. Our group is dedicated to promoting the exhilarating sport of mountain biking while fostering a community of passionate riders. Join us for unforgettable adventures and create lasting memories on two wheels.",
+            "Experience the thrill of coding in breathtaking digital landscapes. Explore challenging programming problems, conquer complex algorithms, and unleash your problem-solving skills. Our group is dedicated to promoting the exhilarating world of coding while fostering a community of passionate programmers. Join us for unforgettable coding adventures and create lasting memories in the realm of technology.",
           type: "In person",
           private: true,
           city: "San Diego",
@@ -43,15 +43,16 @@ module.exports = {
         },
         {
           organizerId: 4,
-          name: "ProperFit: Mastering Workout Mechanics",
+          name: "CtrlFit: Mastering Workout Mechanics with Technology",
           about:
-            "Learn optimal workout techniques, form, and injury prevention. Connect with like-minded fitness enthusiasts for maximum gains.",
+            "Learn optimal workout techniques, form, and injury prevention using cutting-edge fitness technology. Connect with like-minded fitness enthusiasts who leverage technology for maximum gains.",
           type: "Online",
           private: false,
           city: "San Diego",
           state: "CA",
         },
       ],
+
       {}
     );
   },
@@ -63,10 +64,10 @@ module.exports = {
       {
         name: {
           [Op.in]: [
-            "MMA Mastery: Unleash Your Inner Champion",
-            "JavaScript Junction: Exploring the Power of JS",
-            "Trailblazers: Conquer Nature's Challenges",
-            "ProperFit: Mastering Workout Mechanics",
+            "CodeCraft: Mastering the Art of Programming",
+            "Python Pioneers: Exploring the Power of Python",
+            "ByteTrail: Conquer Coding Challenges",
+            "CtrlFit: Mastering Workout Mechanics with Technology",
           ],
         },
       },

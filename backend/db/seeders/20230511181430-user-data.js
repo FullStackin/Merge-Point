@@ -13,28 +13,35 @@ module.exports = {
       options,
       [
         {
-          email: "omar@user.io",
+          email: "Demo@gmail.com",
+          username: "DemoUser",
+          hashedPassword: bcrypt.hashSync("password"),
+          firstName: "Demo",
+          lastName: "demo",
+        },
+        {
+          email: "omar@gmail.com",
           username: "TallTechTitan",
           hashedPassword: bcrypt.hashSync("password"),
           firstName: "omar",
           lastName: "El Sahlah",
         },
         {
-          email: "omar1@user.io",
+          email: "omar1@gmail.com",
           username: "OmarTheBull",
           hashedPassword: bcrypt.hashSync("password1"),
           firstName: "omar",
           lastName: "El Sahlah",
         },
         {
-          email: "omar2@user.io",
+          email: "omar2@gmail.com",
           username: "omar1187",
           hashedPassword: bcrypt.hashSync("password2"),
           firstName: "omar",
           lastName: "El Sahlah",
         },
         {
-          email: "omar3@user.io",
+          email: "omar3@gmail.com",
           username: "omar321",
           hashedPassword: bcrypt.hashSync("password3"),
           firstName: "omar",
@@ -57,4 +64,3 @@ module.exports = {
     );
   },
 };
-

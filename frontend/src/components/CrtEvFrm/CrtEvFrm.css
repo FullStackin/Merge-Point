@@ -1,0 +1,77 @@
+.cep {
+  max-width: 800px;
+  width: 80%;
+  margin: auto;
+}
+
+.cef {
+  background-color: aliceblue;
+  width: 100%;
+}
+
+.cef * {
+  font-size: 1.1rem;
+}
+
+.cef h2 {
+  margin: 0px;
+  font-size: 2rem;
+}
+
+.cef .err {
+  color: maroon;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: inherit;
+}
+
+.cef p {
+  margin: 0px;
+  font-size: 1.5rem;
+}
+
+.cef p:not(:first-of-type) {
+  margin-top: 1rem;
+}
+
+.cef section {
+  text-align: left;
+  width: 100%;
+}
+
+.cef section:not(:last-of-type) {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #CCC;
+}
+
+.cef textarea,
+.cef input {
+  margin-right: 1rem;
+  display: block;
+  border: 2px solid black;
+  margin: 0.5rem 0px;
+  padding: 0.5rem;
+}
+
+.cef input {
+  width: 300px;
+}
+
+.cef textarea {
+  width: 500px;
+}
+
+.cef button {
+  text-align: center;
+  margin: auto;
+}
+
+.price-input {
+  text-align: right;
+  width: 100px !important;
+}
+
+.price-input::before {
+  content: "$";
+}

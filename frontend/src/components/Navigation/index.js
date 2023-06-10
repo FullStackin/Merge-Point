@@ -5,7 +5,6 @@ import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-import DummyUserButton from "../DummyUser/index";
 import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
@@ -21,17 +20,16 @@ function Navigation({ isLoaded }) {
   if (sessionUser) {
     sessionLinks = (
       <li className={sessionClassName}>
-        <button onClick={clickNewGroup}>Start A Merge Point</button>
+        <button onClick={clickNewGroup}>Start a MergePoint</button>
         <ProfileButton user={sessionUser} />
       </li>
     );
   } else {
     sessionLinks = (
       <li className={sessionClassName}>
-        <DummyUserButton />
         <OpenModalButton
           buttonText="Log In"
-          modalComponent={<LoginFormModal />}
+          modalComponent={<LoginFormModal showDemoUser={false} />}
         />
         <OpenModalButton
           buttonText="Sign Up"
@@ -42,9 +40,9 @@ function Navigation({ isLoaded }) {
   }
 
   return (
-    <nav className="main_nav">
+    <nav className="mNav">
       <ul>
-        <li className="nav_logo">
+        <li className="nav-logo">
           <NavLink exact to="/">
             MergePoint
           </NavLink>

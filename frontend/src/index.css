@@ -3,3 +3,15 @@
   font-family: "Gloock", serif;
   font-weight: 200;
 }
+
+#modal-content {
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+button {
+  padding: 0.6rem 1.5rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}

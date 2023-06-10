@@ -1,0 +1,28 @@
+.CnFrmDelMod {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 450px;
+}
+
+.CnFrmDelMod h2 {
+  margin: 0px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.CnFrmDelMod button {
+  font-size: 1.5rem;
+}
+
+.CnFrmDelbttn:hover {
+  border-color: maroon;
+  background-color: maroon;
+  color: white;
+}
+
+.DelN {
+  font-style: italic;
+  text-decoration: underline;
+}

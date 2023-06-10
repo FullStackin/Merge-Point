@@ -1,0 +1,135 @@
+import { useParams, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import EvCrd from "../EventCard";
+import CnFrmDelMod from "../ConfirmDeleteModal";
+import OpenModalButton from "../OpenModalButton";
+import * as groupActions from "../../store/groups";
+import * as eventActions from "../../store/events";
+import "./GrpPg.css";
+
+const GrpPg = () => {
+  const { groupId } = useParams();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const user = useSelector((state) => state.session.user);
+  const group = useSelector((state) => state.groups.singleGroup);
+  const eventsState = useSelector((state) => state.events.allEvents);
+  const events = Object.values(eventsState);
+
+  useEffect(() => {
+    dispatch(groupActions.thunkGetOneGroup(groupId));
+    dispatch(eventActions.thunkGetGroupEvents(groupId));
+  }, [dispatch, groupId]);
+
+  if (!group.id || Number(group.id) !== Number(groupId)) return null;
+
+  const images = group["GroupImages"];
+  const previewImageUrl = images.find((img) => img.preview)?.url;
+
+  const returnToGroups = () => {
+    history.push("/groups");
+  };
+
+  const onClickJoin = () => {
+    alert("Feature coming soon!");
+  };
+
+  const onClickCreate = () => {
+    history.push(`/groups/${groupId}/events/new`);
+  };
+
+  const onClickEdit = () => {
+    history.push(`/groups/${groupId}/edit`);
+  };
+
+  let availableButtons;
+  if (user && group) {
+    if (Number(user.id) === Number(group["Organizer"].id)) {
+      availableButtons = [
+        <button key={1} className="create-btn" onClick={onClickCreate}>
+          Create Event
+        </button>,
+        <button key={2} className="edit-btn" onClick={onClickEdit}>
+          Edit Group
+        </button>,
+        <OpenModalButton
+          buttonText="Delete Group"
+          modalComponent={
+            <CnFrmDelMod type="group" what={group} path="/groups" />
+          }
+        />,
+      ];
+    } else {
+      availableButtons = [
+        <button key={1} className="join-btn" onClick={onClickJoin}>
+          Join Group
+        </button>,
+      ];
+    }
+  }
+
+  return (
+    group && (
+      <>
+        <div className="group-details-page">
+          <div className="return-nav">
+            <button className="return-btn" onClick={returnToGroups}>
+              Return to Groups
+            </button>
+          </div>
+          <section className="group-header">
+            <img
+              src={previewImageUrl}
+              alt="Group Preview"
+              className="group-image"
+            />
+            <div className="group-info">
+              <h2 className="group-name">{group.name}</h2>
+              <p className="group-location">
+                {group.city}, {group.state}
+              </p>
+              <div className="group-membership">
+                <p>{group.numMembers} Members</p>
+                <p>&bull;</p>
+                <p>{group.private ? "Private" : "Public"}</p>
+              </div>
+              <p>
+                Organized by&nbsp;
+                <span className="organizer">
+                  {group["Organizer"].firstName} {group["Organizer"].lastName}
+                </span>
+              </p>
+            </div>
+            <div className="group-actions">{availableButtons}</div>
+          </section>
+          <section className="group-body">
+            <div className="organizer">
+              <h3>Organizer</h3>
+              <p>
+                <span className="organizer-name">
+                  {group["Organizer"].firstName} {group["Organizer"].lastName}
+                </span>
+              </p>
+            </div>
+            <div className="group-about">
+              <h3>About</h3>
+              <p>{group.about}</p>
+            </div>
+            <div className="group-events">
+              <h3>Events ({events.length})</h3>
+              <div className="events-list">
+                {events &&
+                  events.map((event) => (
+                    <EvCrd key={event.id} event={event} group={group} />
+                  ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      </>
+    )
+  );
+};
+
+export default GrpPg;

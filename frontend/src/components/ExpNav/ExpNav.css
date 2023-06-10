@@ -1,0 +1,22 @@
+.Exp-Nav {
+  margin-top: 1rem;
+}
+
+.Exp-Nav a,
+.Exp-Nav a:visited {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: black;
+  padding: 0.6rem 1.5rem;
+}
+
+.Exp-Nav.active {
+  border: 1px solid black;
+  border-radius: 2rem;
+  background-color: lightblue;
+}
+
+.ExpNav_Li {
+  display: flex;
+}

@@ -11,8 +11,9 @@ const eventData = [
   {
     venueId: 1,
     groupId: 1,
-    name: "Virtual Cooking Class",
-    description: "Learn to cook delicious dishes from the comfort of your home",
+    name: "Virtual Coding Workshop",
+    description:
+      "Learn to code and build web applications from the comfort of your home",
     type: "Online",
     capacity: 20,
     price: 25,
@@ -22,8 +23,9 @@ const eventData = [
   {
     venueId: 2,
     groupId: 2,
-    name: "Art Exhibition",
-    description: "A showcase of contemporary art from local artists",
+    name: "Tech Art Exhibition",
+    description:
+      "A showcase of digital art created using innovative technology",
     type: "In person",
     capacity: 100,
     price: 10,
@@ -34,7 +36,8 @@ const eventData = [
     venueId: 3,
     groupId: 3,
     name: "Tech Conference",
-    description: "A conference exploring the latest trends in technology",
+    description:
+      "A conference exploring the latest trends in technology and software development",
     type: "Online",
     capacity: 200,
     price: 100,
@@ -44,8 +47,9 @@ const eventData = [
   {
     venueId: 4,
     groupId: 4,
-    name: "Food Truck Fair",
-    description: "A gathering of food trucks offering a variety of cuisines",
+    name: "Tech Startup Showcase",
+    description:
+      "A gathering of tech startups showcasing their innovative products and services",
     type: "In person",
     capacity: 50,
     price: 5,

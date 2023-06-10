@@ -1,28 +1,63 @@
-ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  border-bottom: 1px solid;
-  border-top: 10px;
+.mNav {
+  margin: 0px;
+  padding: 1rem;
+  border-bottom: 1px solid gray;
 }
 
-li {
-  margin: 0 10px;
+.mNav * {
+  margin: 0px;
+}
+
+.nav-logo a {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  font-family: "Gloock";
+  color: #f65858;
+}
+
+ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.mNav > ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mNav button {
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+
+}
+
+.session-li {
+  display: flex;
+  background-color: white;
+  position: relative;
+  gap: 0.09rem;
+
+}
+
+.profile-button {
+  width: 4rem;
+  align-self: end;
+}
+
+.profile-dropdown {
+  background-color: beige;
+  border: 1px dashed black;
+  position: absolute;
+  top: 100%;
+  right: 0%;
 }
 
 .hidden {
   display: none;
-}
-
-NavLink {
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
-
-}
-
-NavLink.active {
-  color: #ff5722;
 }

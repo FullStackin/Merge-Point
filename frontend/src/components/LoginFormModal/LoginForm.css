@@ -1,39 +1,47 @@
-.form-container {
-  max-width: 400px;
-  margin: 0 auto;
+.login-modal > h1 {
+  text-align: center;
+  margin: 1rem 0px;
+
 }
 
 form {
+  width: 300px;
+  height: 250px;
+  padding: 1rem 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  gap: 0.5rem;
 }
 
-label {
+input {
+  border: 2px solid black;
+  font-size: 2rem;
+}
+
+button.login-button {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  padding: 0.9rem;
+  width: 115%;
+  justify-content: center;
+  align-items: center;
+  background-color: #f65858;
 }
 
-input[type="text"],
-input[type="password"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  font-size: 16px;
+
+button.demo-user-button {
+  display: flex;
+  font-size: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #f65858; */
 }
 
-button[type="submit"] {
-  padding: 12px 24px;
-  background-coor: #ff5722;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-p {
+.error {
   color: red;
-  margin: 5px 0;
-  font-size: 14px;
+  font-size: 1rem;
+  text-align: center;
 }

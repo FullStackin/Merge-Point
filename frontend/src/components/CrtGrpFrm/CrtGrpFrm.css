@@ -1,0 +1,58 @@
+.CGF {
+  margin: auto;
+  width: 80%;
+  max-width: 800px;
+  background-color: aliceblue;
+}
+
+.CGF * {
+  font-size: 1.1rem;
+}
+
+.CGF .error {
+  color: maroon;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.location-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.CGF h3 {
+  font-size: 1.9rem;
+  margin: 0px;
+}
+
+.CGF section {
+  text-align: left;
+  width: 100%;
+}
+
+.CGF section:not(:last-of-type) {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #ccc;
+}
+
+.CGF textarea,
+.CGF input {
+  margin-right: 1rem;
+  padding: 0.5rem;
+  border: 2px solid black;
+}
+
+.CGF input {
+  width: 300px;
+}
+
+.CGF textarea {
+  width: 750px;
+}
+
+.CGF button {
+  text-align: center;
+  margin: auto;
+  margin-bottom: 20px;
+}

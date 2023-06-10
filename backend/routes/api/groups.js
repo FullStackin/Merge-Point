@@ -200,31 +200,44 @@ router.post("/", requireAuth, handleValidationErrors, async (req, res) => {
     city: req.body.city,
     state: req.body.state,
   };
+  console.log(req.body)
 
   const validationErrors = {};
 
   if (!groupData.name || groupData.name.length > 60) {
+    console.log("1")
     validationErrors.name = "Name must be 60 characters or less";
   }
 
   if (!groupData.about || groupData.about.length < 50) {
     validationErrors.about = "About must be 50 characters or more";
+    console.log("2")
+
   }
 
   if (!groupData.type || !["Online", "In person"].includes(groupData.type)) {
     validationErrors.type = "Type must be 'Online' or 'In person'";
+
+    console.log("3")
+
   }
 
   if (!groupData.private || typeof groupData.private !== "boolean") {
     validationErrors.private = "Private must be a boolean";
+    console.log("4")
+
   }
 
   if (!groupData.city) {
     validationErrors.city = "City is required";
+    console.log("5")
+
   }
 
   if (!groupData.state) {
     validationErrors.state = "State is required";
+    console.log("6")
+
   }
 
   if (Object.keys(validationErrors).length > 0) {

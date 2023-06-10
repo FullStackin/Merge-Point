@@ -1,4 +1,3 @@
-// frontend/src/components/OpenModalButton/index.js
 import React from "react";
 import { useModal } from "../../context/Modal";
 

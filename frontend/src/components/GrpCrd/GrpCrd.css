@@ -1,0 +1,51 @@
+.card {
+  --image-size: 175px;
+  display: grid;
+  grid-template-areas:
+    "image header"
+    "image about"
+    "image footer";
+  grid-template-columns: var(--image-size) 1fr;
+  gap: 0rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.card:not(:last-of-type) {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.card * {
+  text-align: left;
+  margin: 0px;
+}
+
+.card img,
+.card__img {
+  width: var(--image-size);
+  aspect-ratio: 16/10;
+  grid-area: image;
+}
+
+.card__hdr {
+  grid-area: header;
+}
+
+.card__ttl {
+}
+
+.card__loc {
+  text-transform: uppercase;
+}
+
+.card__abt {
+  grid-area: about;
+}
+
+.card__ftr {
+  grid-area: footer;
+  display: flex;
+  gap: 0.5rem;
+}

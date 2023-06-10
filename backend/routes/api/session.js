@@ -15,7 +15,7 @@ const validateLogin = [
   check("credential")
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage("Please provide a valid email or username."),
+    .withMessage("The provided credentials were invalid"),
   check("password")
     .exists({ checkFalsy: true })
     .withMessage("Please provide a password."),
@@ -24,8 +24,7 @@ const validateLogin = [
 
 // Log in
 router.post("/", validateLogin, async (req, res, next) => {
-  const { credential, password} = req.body;
-
+  const { credential, password } = req.body;
   const user = await User.unscoped().findOne({
     where: {
       [Op.or]: {
