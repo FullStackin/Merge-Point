@@ -53,6 +53,7 @@ export const thunkGetAllGroups = () => async (dispatch) => {
 };
 
 export const thunkGetOneGroup = (groupId) => async (dispatch) => {
+  console.log(groupId, "GROUP IDDDDD");
   const response = await fetch(`/api/groups/${groupId}`);
   const resBody = await response.json();
   if (response.ok) dispatch(actionGetOneGroup(resBody));
@@ -70,13 +71,13 @@ export const thunkCreateGroup = (group) => async (dispatch) => {
   return resBody;
 };
 
-export const thunkUpdateGroup = (group) => async (dispatch) => {
-  const response = await csrfFetch(`/api/groups/${group.id}`, {
+export const thunkUpdateGroup = (groupId, payload) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
     method: "put",
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify(group),
+    body: JSON.stringify(payload),
   });
   const resBody = await response.json();
   if (response.ok) dispatch(actionCreateGroup(resBody));

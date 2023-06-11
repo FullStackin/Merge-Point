@@ -22,15 +22,18 @@ const CrtEvFrm = ({ event, isEditting }) => {
   const [isPrivate, setIsPrivate] = useState(isEditting ? group.private : "");
 
   const [validationErrors, setValidationErrors] = useState({});
-
+  console.log(groupId);
+  
   useEffect(() => {
     if (
       (isEditting && group && Number(group.id) === Number(event["Group"].id)) ||
       (group && Number(group.id) === Number(groupId))
     )
       return;
-    dispatch(groupActions.thunkGetOneGroup(groupId || event["Group"].id));
-  }, [dispatch, isEditting, event, group, groupId]);
+    if (groupId) {
+      dispatch(groupActions.thunkGetOneGroup(groupId));
+    }
+  }, []);
 
   if (!group.id) return null;
 

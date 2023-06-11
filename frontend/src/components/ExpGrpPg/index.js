@@ -21,7 +21,7 @@ const ExpGrpPg = () => {
   return (
     <>
       <ExpNav />
-      <h2>MergePoint Groups In {"<site here>"}</h2>
+      <h2>Groups in MergePoint</h2>
       <div className="GrpCrd-Li">{renderGroupCards()}</div>
     </>
   );

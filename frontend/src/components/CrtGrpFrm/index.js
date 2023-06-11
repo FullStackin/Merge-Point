@@ -139,6 +139,9 @@ const CrtGrpFrm = ({ group, isEditting }) => {
                 placeholder="City"
                 onChange={(e) => setCity(e.target.value)}
               />
+              {validationErrors.city && (
+                <p className="error">{validationErrors.city}</p>
+              )}
             </div>
             <div>
               <input
@@ -147,6 +150,9 @@ const CrtGrpFrm = ({ group, isEditting }) => {
                 placeholder="STATE"
                 onChange={(e) => setState(e.target.value)}
               />
+              {validationErrors.state && (
+                <p className="error">{validationErrors.state}</p>
+              )}
             </div>
           </div>
         </section>
@@ -165,6 +171,9 @@ const CrtGrpFrm = ({ group, isEditting }) => {
               console.log("name", name);
             }}
           />
+          {validationErrors.name && (
+            <p className="error">{validationErrors.name}</p>
+          )}
         </section>
         <section>
           <h3>Please add a about of this MergePoint event:</h3>
@@ -187,17 +196,23 @@ const CrtGrpFrm = ({ group, isEditting }) => {
             cols="40"
             onChange={(e) => setAbout(e.target.value)}
           />
+
+          {validationErrors.about && (
+            <p className="error">{validationErrors.about}</p>
+          )}
         </section>
         <section>
           <p>Is this an online or in-person MergePoint?</p>
           <select value={type} onChange={(e) => setType(e.target.value)}>
-            <option value={""} hidden disabled>
+            <option value="" hidden disabled>
               (Select One)
             </option>
             <option value="In Person">In Person</option>
             <option value="Online">Online</option>
           </select>
-
+          {validationErrors.type && (
+            <p className="error">{validationErrors.type}</p>
+          )}
           <p>Is this MergePoint public or private?</p>
           <div>
             <fieldset>
@@ -227,7 +242,9 @@ const CrtGrpFrm = ({ group, isEditting }) => {
               />
             </fieldset>
           </div>
-
+          {validationErrors.private && (
+            <p className="error">{validationErrors.private}</p>
+          )}
           <p>Please add an image url for your MergePoint</p>
           <input
             value={url}
@@ -235,6 +252,9 @@ const CrtGrpFrm = ({ group, isEditting }) => {
             placeholder="image url"
             onChange={(e) => setUrl(e.target.value)}
           />
+          {validationErrors.url && (
+            <p className="error">{validationErrors.url}</p>
+          )}
         </section>
         <section>
           <button type="submit">

@@ -51,7 +51,7 @@ const GrpPg = () => {
           Create Event
         </button>,
         <button key={2} className="edit-btn" onClick={onClickEdit}>
-          Edit Group
+          Update Group
         </button>,
         <OpenModalButton
           buttonText="Delete Group"
