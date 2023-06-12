@@ -52,6 +52,7 @@ router.get("/", async (req, res) => {
       limit: size,
       offset: (page - 1) * size,
     });
+    console.log("sweetpotato");
 
     const eventsArr = [];
     for (const event of events.rows) {
@@ -81,7 +82,6 @@ router.get("/", async (req, res) => {
             }
           : null,
       };
-
       const numAttending = await Attendance.count({
         where: {
           eventId: event.id,
@@ -116,7 +116,9 @@ router.get("/", async (req, res) => {
 
     res.json(response);
   } catch (error) {
-    res
+    res;
+    console
+      .log(error)
       .status(500)
       .json({ error: "An error occurred while retrieving events." });
   }
@@ -274,7 +276,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
     const venue = await Venue.findByPk(venueId);
     if (!venue) errResult.errors.venueId = "Venue does not exist";
   }
-  
+
   if (!name || name.length < 5) {
     errResult.errors.name = "Name must be at least 5 characters";
   }

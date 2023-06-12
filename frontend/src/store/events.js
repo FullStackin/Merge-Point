@@ -44,9 +44,9 @@ const actionAddEventImage = (eventImage) => {
 export const thunkGetAllEvents = () => async (dispatch) => {
   const response = await fetch("/api/events");
   const resBody = await response.json();
-
+  console.log(resBody);
   const events = {};
-  if (resBody.Events)
+  if (resBody["Events"])
     resBody.Events.forEach((event) => (events[event.id] = event));
 
   if (response.ok) dispatch(actionGetAllEvents(resBody["Events"]));

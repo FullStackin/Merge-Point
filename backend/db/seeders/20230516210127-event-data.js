@@ -9,7 +9,7 @@ options.tableName = "Events";
 
 const eventData = [
   {
-    venueId: 1,
+    venueId: null,
     groupId: 1,
     name: "Virtual Coding Workshop",
     description:
@@ -21,7 +21,7 @@ const eventData = [
     endDate: "2023-06-02 17:00:00",
   },
   {
-    venueId: 2,
+    venueId: null,
     groupId: 2,
     name: "Tech Art Exhibition",
     description:
@@ -33,7 +33,7 @@ const eventData = [
     endDate: "2023-07-20 18:00:00",
   },
   {
-    venueId: 3,
+    venueId: null,
     groupId: 3,
     name: "Tech Conference",
     description:
@@ -45,7 +45,7 @@ const eventData = [
     endDate: "2023-08-10 17:00:00",
   },
   {
-    venueId: 4,
+    venueId: null,
     groupId: 4,
     name: "Tech Startup Showcase",
     description:
