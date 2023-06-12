@@ -29,7 +29,7 @@ const FnEvPg = () => {
   return (
     <>
       <ExpNav />
-      <h2>MergePoint Events In {"<site here>"}</h2>
+      <h2>MergePoint Events</h2>
       <div className="EvCrd-li">
         {allEvents &&
           sortedEvents.map((event) => <EvCrd key={event.id} event={event} />)}
