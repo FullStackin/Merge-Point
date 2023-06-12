@@ -86,19 +86,6 @@ const CrtEvFrm = ({ event, isEditting }) => {
       }
     );
     console.log(validationErrors);
-    // .then(async (event) => {
-    //   console.log(event);
-    // })
-    // .catch((error) => {
-    //   if (error.response && error.response.status === 400) {
-    //     error.response.json().then((resBody) => {
-    //       console.log(resBody);
-    //       setValidationErrors(resBody);
-    //     });
-    //   } else {
-    //     console.error("An error occurred while creating the event:", error);
-    //   }
-    // });
   };
 
   return (

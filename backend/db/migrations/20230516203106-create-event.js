@@ -20,9 +20,9 @@ module.exports = {
         venueId: {
           allowNull: true,
           type: Sequelize.INTEGER,
-          references: {
-            model: "Venues",
-          },
+          // references: {
+          //   model: "Venues",
+          // },
         },
         groupId: {
           type: Sequelize.INTEGER,

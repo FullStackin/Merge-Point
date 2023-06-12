@@ -19,7 +19,7 @@ const EvPg = () => {
   useEffect(() => {
     (async () => {
       const event = await dispatch(eventActions.thunkGetOneEvent(eventId));
-      dispatch(groupActions.thunkGetOneGroup(event["Group"].id));
+      if (event.Group) dispatch(groupActions.thunkGetOneGroup(event.Group.id));
     })();
   }, [dispatch, eventId]);
 
