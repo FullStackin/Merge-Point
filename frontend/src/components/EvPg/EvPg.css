@@ -42,7 +42,7 @@
 
 .event-details__event-info {
   grid-area: event-info;
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
   padding: 1.5rem;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .event-details__about {
-  margin-top: 1.5rem;
+  margin-top: -40rem;
 }
 
 .delete-event:hover {
@@ -88,4 +88,10 @@
 
 .event-details__event-info > *:not(:last-child) {
   margin-bottom: 2rem;
+}
+
+.event-details__actions {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
 }

@@ -7,6 +7,13 @@ import OpenModalButton from "../OpenModalButton";
 import CnFrmDelMod from "../ConfirmDeleteModal";
 import "./EvPg.css";
 
+import {
+  faClock,
+  faMapMarkerAlt,
+  faMoneyBillWave,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const EvPg = () => {
   const { eventId } = useParams();
   const dispatch = useDispatch();
@@ -80,7 +87,11 @@ const EvPg = () => {
               src="https://cdn.discordapp.com/attachments/1008571029804810332/1115851058305040475/chapmaster_lion_roaring_with_kings_crown_19141255-93c0-48e6-806f-ec479b3351cf.png"
               className="event-details__image"
               alt="event"
-            />
+            />{" "}
+            <section className="event-details__about">
+              <h2>Details</h2>
+              <p>{event.description}+{event.description}+{event.description}+{event.description}</p>
+            </section>
             <div className="event-details__group-info">
               <img
                 src="https://cdn.discordapp.com/attachments/1008571029804810332/1115851058305040475/chapmaster_lion_roaring_with_kings_crown_19141255-93c0-48e6-806f-ec479b3351cf.png"
@@ -92,24 +103,26 @@ const EvPg = () => {
                 <p>{group.private ? "Private" : "Public"}</p>
               </div>
             </div>
-
             <div className="event-details__event-info">
               <div className="event-details__date">
-                <p>START</p>
+                <p>
+                  <FontAwesomeIcon icon={faClock} /> START
+                </p>
                 <p>{event.startDate}</p>
-                <p>END</p>
+                <p>
+                  <FontAwesomeIcon icon={faClock} /> END
+                </p>
                 <p>{event.endDate}</p>
               </div>
               <div className="event-details__price">
+                <FontAwesomeIcon icon={faMoneyBillWave} />{" "}
                 {event.price > 0 ? event.price : "FREE"}
               </div>
-              <div className="event-details__type">{event.type}</div>
+              <div className="event-details__type">
+                <FontAwesomeIcon icon={faMapMarkerAlt} /> {event.type}
+              </div>
               {actionButtons}
             </div>
-          </section>
-          <section className="event-details__about">
-            <h2>Details</h2>
-            <p>{event.description}</p>
           </section>
         </div>
       </>
