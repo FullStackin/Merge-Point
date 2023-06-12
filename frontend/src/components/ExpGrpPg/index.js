@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import * as groupActions from "../../store/groups";
 import ExpNav from "../ExpNav";
 import GrpCrd from "../GrpCrd";
+import "./ExpGrpPg.css";
 
 const ExpGrpPg = () => {
   const dispatch = useDispatch();
@@ -19,11 +20,11 @@ const ExpGrpPg = () => {
   };
 
   return (
-    <>
+    <div className="ExpGrpPg">
       <ExpNav />
-      <h2>Groups in MergePoint</h2>
+      <p>Groups in MergePoint</p>
       <div className="GrpCrd-Li">{renderGroupCards()}</div>
-    </>
+    </div>
   );
 };
 

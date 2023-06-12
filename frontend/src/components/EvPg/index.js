@@ -77,21 +77,22 @@ const EvPg = () => {
           </p>
           <section className="event-details-header">
             <img
-              src={eventPreviewImageUrl}
+              src="https://cdn.discordapp.com/attachments/1008571029804810332/1115851058305040475/chapmaster_lion_roaring_with_kings_crown_19141255-93c0-48e6-806f-ec479b3351cf.png"
               className="event-details__image"
               alt="event"
             />
             <div className="event-details__group-info">
               <img
-                src={groupPreviewImageUrl}
+                src="https://cdn.discordapp.com/attachments/1008571029804810332/1115851058305040475/chapmaster_lion_roaring_with_kings_crown_19141255-93c0-48e6-806f-ec479b3351cf.png"
                 className="event-details__group-image"
                 alt="group"
               />
-              <div>
+              <div className="event-details__group-details">
                 <h3 className="event-details__group-name">{group.name}</h3>
                 <p>{group.private ? "Private" : "Public"}</p>
               </div>
             </div>
+
             <div className="event-details__event-info">
               <div className="event-details__date">
                 <p>START</p>

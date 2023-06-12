@@ -6,10 +6,14 @@ const ExpNav = () => {
     <nav className="Exp-Nav">
       <ul className="ExpNav_Li">
         <li>
-          <NavLink to="/events">Events</NavLink>
+          <NavLink to="/events" className="ExpNav_Header">
+            Events
+          </NavLink>
         </li>
         <li>
-          <NavLink to="/groups">Groups</NavLink>
+          <NavLink to="/groups" className="ExpNav_Header">
+            Groups
+          </NavLink>
         </li>
       </ul>
     </nav>

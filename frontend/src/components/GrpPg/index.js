@@ -78,7 +78,7 @@ const GrpPg = () => {
     } else {
       availableButtons = [
         <button key={1} className="join-btn" onClick={onClickJoin}>
-          Join Group
+          Join this Group!
         </button>,
       ];
     }
@@ -86,63 +86,61 @@ const GrpPg = () => {
 
   return (
     group && (
-      <>
-        <div className="group-details-page">
-          <div className="return-nav">
-            <button className="return-btn" onClick={returnToGroups}>
-              Return to Groups
-            </button>
-          </div>
-          <section className="group-header">
+      <div className="group-details-page">
+        <div className="return-nav">
+          <button className="return-btn" onClick={returnToGroups}>
+            Return to Groups
+          </button>
+        </div>
+        <div className="group-header">
             <img
               src={previewImageUrl}
               alt="Group Preview"
               className="group-image"
             />
-            <div className="group-info">
-              <h2 className="group-name">{group.name}</h2>
-              <p className="group-location">
-                {group.city}, {group.state}
-              </p>
-              <div className="group-membership">
-                <p>{group.numMembers} Members</p>
-                <p>&bull;</p>
-                <p>{group.private ? "Private" : "Public"}</p>
-              </div>
-              <p>
-                Organized by&nbsp;
-                <span className="organizer">
-                  {group["Organizer"].firstName} {group["Organizer"].lastName}
-                </span>
-              </p>
+          <div className="group-info">
+            <h2 className="group-name">{group.name}</h2>
+            <p className="group-location">
+              {group.city}, {group.state}
+            </p>
+            <div className="group-membership">
+              <p>{group.numMembers} Members</p>
+              <p>&bull;</p>
+              <p>{group.private ? "Private" : "Public"}</p>
             </div>
-            <div className="group-actions">{availableButtons}</div>
-          </section>
-          <section className="group-body">
-            <div className="organizer">
-              <h3>Organizer</h3>
-              <p>
-                <span className="organizer-name">
-                  {group["Organizer"].firstName} {group["Organizer"].lastName}
-                </span>
-              </p>
-            </div>
-            <div className="group-about">
-              <h3>About</h3>
-              <p>{group.about}</p>
-            </div>
-            <div className="group-events">
-              <h3>Events ({events.length})</h3>
-              <div className="events-list">
-                {events &&
-                  sortedEvents.map((event) => (
-                    <EvCrd key={event.id} event={event} group={group} />
-                  ))}
-              </div>
-            </div>
-          </section>
+            <p>
+              Organized by&nbsp;
+              <span className="organizer">
+                {group["Organizer"].firstName} {group["Organizer"].lastName}
+              </span>
+            </p>
+          </div>
+          <div className="group-actions">{availableButtons}</div>
         </div>
-      </>
+        <div className="group-body">
+          <div className="organizer">
+            <h3>Organizer</h3>
+            <p>
+              <span className="organizer-name">
+                {group["Organizer"].firstName} {group["Organizer"].lastName}
+              </span>
+            </p>
+          </div>
+          <div className="group-about">
+            <h3>About</h3>
+            <p>{group.about}</p>
+          </div>
+          <div className="group-events">
+            <h3>Events ({events.length})</h3>
+            <div className="events-list">
+              {events &&
+                sortedEvents.map((event) => (
+                  <EvCrd key={event.id} event={event} group={group} />
+                ))}
+            </div>
+          </div>
+        </div>
+      </div>
     )
   );
 };

@@ -36,6 +36,11 @@ const ProfileButton = ({ user }) => {
     history.push("/groups");
   };
 
+  const viewEvents = (e) => {
+    e.preventDefault();
+    history.push("/events");
+  };
+
   const ulClassName = "profile-dropdown " + (showMenu ? "" : "hidden ");
 
   return (
@@ -52,6 +57,7 @@ const ProfileButton = ({ user }) => {
         <li>
           <button onClick={logout}>Log Out</button>
           <button onClick={viewGroups}>View Groups</button>
+          <button onClick={viewEvents}>View Events</button>
         </li>
       </ul>
     </>

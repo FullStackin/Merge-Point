@@ -2,8 +2,7 @@
   margin-top: 1rem;
 }
 
-.Exp-Nav a,
-.Exp-Nav a:visited {
+.ExpNav_Header {
   display: inline-block;
   text-decoration: none;
   font-size: 1.5rem;
@@ -11,10 +10,8 @@
   padding: 0.6rem 1.5rem;
 }
 
-.Exp-Nav.active {
-  border: 1px solid black;
-  border-radius: 2rem;
-  background-color: lightblue;
+.ExpNav_Header:hover {
+  border-bottom: 2px solid teal;
 }
 
 .ExpNav_Li {

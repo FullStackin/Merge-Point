@@ -28,34 +28,19 @@ router.get("/", async (req, res) => {
       whereClause.startDate = startDate;
     }
 
-    const events = await Event.findAndCountAll({
-      include: [
-        {
-          model: Group,
-          attributes: ["id", "name", "city", "state"],
-        },
-        {
-          model: Venue,
-          attributes: ["id", "city", "state"],
-        },
-        {
-          model: EventImage,
-          attributes: {
-            exclude: ["createdAt", "updatedAt"],
-          },
-        },
-      ],
-      where: whereClause,
+    const events = await Event.findAll({
+      whereClause,
       attributes: {
-        exclude: ["description", "capacity", "price", "createdAt", "updatedAt"],
+        exclude: ["description", "price", "capacity", "createdAt", "updatedAt"],
       },
       limit: size,
       offset: (page - 1) * size,
     });
-    console.log("sweetpotato");
+
+    console.log("events", events);
 
     const eventsArr = [];
-    for (const event of events.rows) {
+    for (const event of events) {
       const eventPojo = {
         id: event.id,
         groupId: event.groupId,
@@ -116,9 +101,8 @@ router.get("/", async (req, res) => {
 
     res.json(response);
   } catch (error) {
-    res;
-    console
-      .log(error)
+    console.log(error);
+    res
       .status(500)
       .json({ error: "An error occurred while retrieving events." });
   }

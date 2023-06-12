@@ -1,0 +1,22 @@
+.ExpGrpPg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ExpGrpPg h4 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.GrpCrd-Li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-bottom: 1px px black;
+}

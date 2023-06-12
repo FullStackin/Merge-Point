@@ -60,16 +60,14 @@ const eventData = [
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert(options, eventData, {});
-  },
-
   async down(queryInterface, Sequelize) {
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(
       options,
       {
-        venueId: { [Op.in]: [1, 2, 3, 4] },
+        name: {
+          [Op.in]: eventData.map((event) => event.name),
+        },
       },
       {}
     );

@@ -29,7 +29,7 @@
 .group-image {
   grid-area: image;
   background-color: darkcyan;
-  width: 100%;
+  width: 700px;
   height: 100%;
   align-self: center;
 }
@@ -53,33 +53,24 @@
 }
 
 .group-actions {
+  grid-area: actions;
   display: flex;
   justify-content: start;
-  align-items: end;
-  gap: 1rem;
+  align-items: start;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-left: 0.5rem;
+  margin-top: auto;
 }
 
-.delete-btn {
-  justify-self: end;
+.join-btn {
+  background-color: red;
+  color: whitesmoke;
+  box-shadow: 10px 5px black;
+  height: 50px;
+  width: 200px;
 }
 
-.delete-btn:hover {
-  border-color: maroon;
-  background-color: maroon;
-  color: white;
-}
-
-.group-body {
-}
-
-.organizer {
-}
-
-.group-about {
-}
-
-.group-events {
-}
 
 .return-nav {
   text-align: center;
