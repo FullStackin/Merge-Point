@@ -624,14 +624,14 @@ router.post(
 
     const errors = {};
 
-    if (!venueId) {
-      errors.venueId = "Venue ID is required";
-    } else {
-      const venue = await Venue.findByPk(venueId);
-      if (!venue) {
-        errors.venueId = "Venue does not exist";
-      }
-    }
+    // if (!venueId) {
+    //   errors.venueId = "Venue ID is required";
+    // } else {
+    //   const venue = await Venue.findByPk(venueId);
+    //   if (!venue) {
+    //     errors.venueId = "Venue does not exist";
+    //   }
+    // }
 
     if (!name || name.length < 5) {
       errors.name = "Name must be at least 5 characters";

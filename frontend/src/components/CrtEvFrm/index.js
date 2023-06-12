@@ -61,7 +61,6 @@ const CrtEvFrm = ({ event, isEditting }) => {
       name,
       type,
       price: Number(price),
-      venueId: 1,
       startDate,
       endDate,
       description: description,

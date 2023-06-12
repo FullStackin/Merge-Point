@@ -18,13 +18,7 @@ const LandingPage = () => {
               MergePoint The Tech Community - Where Innovation Thrives!
             </h1>
             <p>
-              test test test test test test test test test test test test test
-              test test test test test test test test test test test test test
-              test test test test test test test test test test test test test
-              test test test test test test test test test test test test test
-              test test test test test test test test test test test test test
-              test test test test test test test test test test test test test
-              test test test test test test test test test test test test test
+            MergePoint is a tech community where innovation thrives. It's a platform for tech enthusiasts, professionals, and innovators to collaborate, share knowledge, and spark creativity. Join us to connect, learn, and make a difference in the world of technology.MergePoint is the go-to destination for tech enthusiasts, professionals, and innovators. Join us to connect with like-minded individuals, share knowledge, and stay ahead of the curve in the ever-evolving world of technology. Let's shape the future at MergePoint!
             </p>
           </div>
           <img src="" alt="" className="nlp-intro__image" />
