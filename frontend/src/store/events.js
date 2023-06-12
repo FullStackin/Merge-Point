@@ -46,7 +46,8 @@ export const thunkGetAllEvents = () => async (dispatch) => {
   const resBody = await response.json();
 
   const events = {};
-  resBody["Events"].forEach((event) => (events[event.id] = event));
+  if (resBody.Events)
+    resBody.Events.forEach((event) => (events[event.id] = event));
 
   if (response.ok) dispatch(actionGetAllEvents(resBody["Events"]));
   return resBody;
