@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import * as eventActions from "../../store/events";
 import * as groupActions from "../../store/groups";
 import OpenModalButton from "../OpenModalButton";
-import CnFrmDelMod from "../ConfirmDeleteModal"
+import CnFrmDelMod from "../ConfirmDeleteModal";
 import "./EvPg.css";
 
 const EvPg = () => {
@@ -16,7 +16,6 @@ const EvPg = () => {
   const event = useSelector((state) => state.events.singleEvent);
   const group = useSelector((state) => state.groups.singleGroup);
 
-
   useEffect(() => {
     (async () => {
       const event = await dispatch(eventActions.thunkGetOneEvent(eventId));
@@ -24,13 +23,13 @@ const EvPg = () => {
     })();
   }, [dispatch, eventId]);
 
-
   if (!event.id || !group.id || Number(event.id) !== Number(eventId))
     return null;
-
+  console.log(event.EventImages);
   const eventPreviewImageUrl = event["EventImages"].find(
     (img) => img.preview
   )?.url;
+  console.log(eventPreviewImageUrl);
   const groupPreviewImageUrl = group["GroupImages"].find(
     (img) => img.preview
   )?.url;
@@ -49,11 +48,7 @@ const EvPg = () => {
       <OpenModalButton
         buttonText="Delete MergePoint"
         modalComponent={
-          <CnFrmDelMod
-            type="event"
-            what={event}
-            path={`/groups/${group.id}`}
-          />
+          <CnFrmDelMod type="event" what={event} path={`/groups/${group.id}`} />
         }
       />,
     ];

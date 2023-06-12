@@ -23,7 +23,6 @@
 
 .evn_crd_image {
   width: var(--image-size);
-  aspect-ratio: 16/10;
   grid-area: image;
 }
 

@@ -53,7 +53,6 @@ export const thunkGetAllGroups = () => async (dispatch) => {
 };
 
 export const thunkGetOneGroup = (groupId) => async (dispatch) => {
-  console.log(groupId, "GROUP IDDDDD");
   const response = await fetch(`/api/groups/${groupId}`);
   const resBody = await response.json();
   if (response.ok) dispatch(actionGetOneGroup(resBody));
@@ -61,14 +60,32 @@ export const thunkGetOneGroup = (groupId) => async (dispatch) => {
 };
 
 export const thunkCreateGroup = (group) => async (dispatch) => {
-  const response = await csrfFetch("/api/groups", {
-    method: "POST",
-    body: JSON.stringify(group),
-  });
-  const resBody = await response.json();
-  console.log(resBody);
-  if (response.ok) dispatch(actionCreateGroup(resBody));
-  return resBody;
+  console.log("at create group thunk", group);
+
+  try {
+    const response = await csrfFetch("/api/groups", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(group),
+    });
+    const resBody = await response.json();
+    console.log("BODDIED", resBody);
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Error response from server:", error);
+      return error;
+    }
+
+    console.log(resBody);
+    dispatch(actionCreateGroup(resBody));
+    return resBody;
+  } catch (error) {
+    console.log("Error occurred while making request:", error);
+    const e = await error.json();
+    return e;
+  }
 };
 
 export const thunkUpdateGroup = (groupId, payload) => async (dispatch) => {

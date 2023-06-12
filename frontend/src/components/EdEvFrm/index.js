@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { thunkGetOneEvent } from "../../store/events";
@@ -12,6 +12,7 @@ const EdEvFrm = () => {
   const event = useSelector((state) => state.events.singleEvent);
   const group = useSelector((state) => state.groups.singleGroup);
   const user = useSelector((state) => state.session.user);
+  const history = useHistory();
 
   const isCurrentEvent = Number(event.id) === Number(eventId);
   const isCurrentGroup = Number(group.id) === Number(event?.Group?.id);
@@ -27,6 +28,8 @@ const EdEvFrm = () => {
   }, [dispatch, eventId, isCurrentEvent, isCurrentGroup, event?.Group?.id]);
 
   const isAuthorized = user.id === group?.organizerId;
+
+  if (!isAuthorized) history.push("/");
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { thunkGetOneGroup } from "../../store/groups";
@@ -10,6 +10,7 @@ const EdGrpFrm = () => {
   const dispatch = useDispatch();
   const group = useSelector((state) => state.groups.singleGroup);
   const user = useSelector((state) => state.session.user);
+  const history = useHistory();
 
   const isCurrentGroup = Number(group.id) === Number(groupId);
   const isAuthorized = user.id === group.organizerId;
@@ -19,6 +20,8 @@ const EdGrpFrm = () => {
       dispatch(thunkGetOneGroup(groupId));
     }
   }, [dispatch, groupId, isCurrentGroup]);
+
+  if (!isAuthorized) history.push("/");
 
   return (
     <>

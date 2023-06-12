@@ -21,7 +21,7 @@ const GrpCrd = ({ group }) => {
       </header>
       <p className="card__abt">{group.about}</p>
       <footer className="card__ftr">
-        <p>## Events</p>
+        <p>Events</p>
         <p>&bull;</p>
         <p>{group.private ? "Private" : "Public"}</p>
       </footer>

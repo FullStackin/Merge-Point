@@ -16,6 +16,21 @@ const GrpPg = () => {
   const group = useSelector((state) => state.groups.singleGroup);
   const eventsState = useSelector((state) => state.events.allEvents);
   const events = Object.values(eventsState);
+  console.log(group);
+
+  const sortedEvents = events.sort((a, b) => {
+    const startDateA = new Date(a.startDate).getTime();
+    const startDateB = new Date(b.startDate).getTime();
+
+    const now = new Date().getTime();
+    if (startDateA > now && startDateB <= now) {
+      return -1;
+    } else if (startDateB > now && startDateA < now) {
+      return 1;
+    } else {
+      return startDateA - startDateB;
+    }
+  });
 
   useEffect(() => {
     dispatch(groupActions.thunkGetOneGroup(groupId));
@@ -120,7 +135,7 @@ const GrpPg = () => {
               <h3>Events ({events.length})</h3>
               <div className="events-list">
                 {events &&
-                  events.map((event) => (
+                  sortedEvents.map((event) => (
                     <EvCrd key={event.id} event={event} group={group} />
                   ))}
               </div>

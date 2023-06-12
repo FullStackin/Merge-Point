@@ -13,7 +13,7 @@ const CrtGrpFrm = ({ group, isEditting }) => {
   const [name, setName] = useState(group?.name || "");
   const [about, setAbout] = useState(group?.about || "");
   const [type, setType] = useState(group?.type || "");
-  const [isPrivate, setIsPrivate] = useState(isEditting ? group.private : true);
+  const [isPrivate, setIsPrivate] = useState(isEditting ? group.private : "");
   const image = group?.GroupImages?.find((img) => img.preview);
   const [url, setUrl] = useState(image?.url || "");
 
@@ -64,10 +64,10 @@ const CrtGrpFrm = ({ group, isEditting }) => {
         about: "Description must be more than 50 characters",
       }));
     }
-
     if (!isPrivate) {
       setValidationErrors((prevErr) => ({
         ...prevErr,
+
         private: "Privacy is required",
       }));
     }
@@ -94,29 +94,31 @@ const CrtGrpFrm = ({ group, isEditting }) => {
       state,
       about,
       type,
+      private: true,
       previewImage: url,
-      private: isPrivate,
     };
+    // if (isPrivate === "Public") groupData.private = false;
+    // else if (isPrivate === "Private") groupData.private = true;
+
     const groupImage = {
       id: isEditting ? image?.id : undefined,
       url,
       preview: true,
     };
 
-    dispatch(groupActions.thunkCreateGroup(groupData))
-      .then(async (group) => {
-        if (url !== image?.url)
-          await dispatch(
-            isEditting
-              ? groupActions.thunkUpdateGroupImage(groupImage, group.id)
-              : groupActions.thunkAddGroupImage(groupImage, group.id)
-          );
-        history.push(`/groups/${group.id}`);
-      })
-      .catch(async (res) => {
-        const resBody = await res.json();
-        setValidationErrors(resBody.errors);
-      });
+    let res = dispatch(groupActions.thunkCreateGroup(groupData)).then(
+      async (res) => {
+        console.log(res);
+        if (res.errors) {
+          setValidationErrors(res.errors);
+        } else {
+          if (!isEditting)
+            dispatch(groupActions.thunkAddGroupImage(groupImage, res.id));
+          setValidationErrors({});
+          history.push(`/groups/${res.id}`);
+        }
+      }
+    );
   };
 
   return (
@@ -207,7 +209,7 @@ const CrtGrpFrm = ({ group, isEditting }) => {
             <option value="" hidden disabled>
               (Select One)
             </option>
-            <option value="In Person">In Person</option>
+            <option value="In person">In Person</option>
             <option value="Online">Online</option>
           </select>
           {validationErrors.type && (
@@ -215,8 +217,7 @@ const CrtGrpFrm = ({ group, isEditting }) => {
           )}
           <p>Is this MergePoint public or private?</p>
           <div>
-            <fieldset>
-              <label htmlFor="public">Public</label>
+            {/* <label htmlFor="public">Public</label>
               <input
                 type="radio"
                 id="public"
@@ -239,8 +240,17 @@ const CrtGrpFrm = ({ group, isEditting }) => {
                   setIsPrivate(false);
                   console.log(e.target.value, "private");
                 }}
-              />
-            </fieldset>
+              /> */}
+            <select
+              value={isPrivate}
+              onChange={(e) => setIsPrivate(e.target.value)}
+            >
+              <option value={""} hidden disabled>
+                (Select One)
+              </option>
+              <option value="Public">Public</option>
+              <option value="Private">Private</option>
+            </select>
           </div>
           {validationErrors.private && (
             <p className="error">{validationErrors.private}</p>

@@ -33,7 +33,6 @@ const ProfileButton = ({ user }) => {
 
   const viewGroups = (e) => {
     e.preventDefault();
-    // dispatch(sessionActions.thunkGetAllGroups());
     history.push("/groups");
   };
 
@@ -45,7 +44,7 @@ const ProfileButton = ({ user }) => {
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={menuRef}>
-        <li>{user.username}</li>
+        <li>Hello, {user.firstName}</li>
         <li>
           {user.firstName} {user.lastName}
         </li>

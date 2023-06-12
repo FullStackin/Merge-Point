@@ -25,7 +25,6 @@
 .card img,
 .card__img {
   width: var(--image-size);
-  aspect-ratio: 16/10;
   grid-area: image;
 }
 
