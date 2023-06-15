@@ -7,22 +7,21 @@ import "./ExpGrpPg.css";
 
 const ExpGrpPg = () => {
   const dispatch = useDispatch();
-  const allGroups = useSelector((state) => Object.values(state.groups.allGroups));
+  const allGroups = useSelector((state) =>
+    Object.values(state.groups.allGroups)
+  );
 
   useEffect(() => {
     dispatch(groupActions.thunkGetAllGroups());
   }, [dispatch]);
 
   const renderGroupCards = () => {
-    return allGroups.map((group) => (
-      <GrpCrd key={group.id} group={group} />
-    ));
+    return allGroups.map((group) => <GrpCrd key={group.id} group={group} />);
   };
 
   return (
     <div className="ExpGrpPg">
       <ExpNav />
-      <p>Groups in MergePoint</p>
       <div className="GrpCrd-Li">{renderGroupCards()}</div>
     </div>
   );

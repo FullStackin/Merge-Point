@@ -66,7 +66,7 @@ const LandingPage = () => {
                   history.push("/groups/new");
                 }}
               >
-                Start a new Hub
+                Start a new group
               </h2>
               <p className="nlp-nav-card__about">
               Become a trailblazer and create your own hub, centered around your unique interests and vision. Bring together a community of passionate individuals and embark on an exciting journey of exploration and innovation.

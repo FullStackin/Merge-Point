@@ -15,6 +15,7 @@ const LoginFormModal = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const { closeModal } = useModal();
   const [isDemoUserClicked, setIsDemoUserClicked] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     setIsEnabled(credential.length >= 4 && password.length >= 6);
@@ -47,6 +48,7 @@ const LoginFormModal = () => {
       } else {
         console.error("An error occurred while logging in:", error);
       }
+      setLoginError("Invalid username or password."); // Set login error message
     }
   };
 
@@ -68,6 +70,7 @@ const LoginFormModal = () => {
           error
         );
       }
+      setLoginError("Invalid username or password."); // Set login error message
     }
   };
 
@@ -90,6 +93,8 @@ const LoginFormModal = () => {
       {validationErrors.credential && (
         <p className="error">{validationErrors.credential}</p>
       )}
+      {loginError && <p className="error">{loginError}</p>}
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"

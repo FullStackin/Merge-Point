@@ -41,6 +41,13 @@ const actionAddGroupImage = (groupImage) => {
   };
 };
 
+const actionUpdateGroup = (updatedGroup) => {
+  return {
+    type: "UPDATE_GROUP",
+    group: updatedGroup,
+  };
+};
+
 export const thunkGetAllGroups = () => async (dispatch) => {
   const response = await fetch("/api/groups");
   const resBody = await response.json();
@@ -90,20 +97,22 @@ export const thunkCreateGroup = (group) => async (dispatch) => {
 
 export const thunkUpdateGroup = (groupId, payload) => async (dispatch) => {
   const response = await csrfFetch(`/api/groups/${groupId}`, {
-    method: "put",
+    method: "PUT",
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
   });
   const resBody = await response.json();
-  if (response.ok) dispatch(actionCreateGroup(resBody));
+  if (response.ok) {
+    dispatch(actionUpdateGroup(resBody));
+  }
   return resBody;
 };
 
 export const thunkDeleteGroup = (groupId) => async (dispatch) => {
   const response = await csrfFetch(`/api/groups/${groupId}`, {
-    method: "delete",
+    method: "DELETE",
   });
   const resBody = await response.json();
   if (response.ok) dispatch(actionDeleteGroup(groupId));
@@ -123,7 +132,7 @@ export const thunkAddGroupImage = (groupImage, groupId) => async (dispatch) => {
 export const thunkUpdateGroupImage =
   (groupImage, groupId) => async (dispatch) => {
     await csrfFetch(`/api/group-images/${groupImage.id}`, {
-      method: "delete",
+      method: "DELETE",
       headers: {
         "content-type": "application/json",
       },

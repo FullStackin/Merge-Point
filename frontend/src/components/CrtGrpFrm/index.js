@@ -106,21 +106,24 @@ const CrtGrpFrm = ({ group, isEditting }) => {
       preview: true,
     };
 
-    let res = dispatch(groupActions.thunkCreateGroup(groupData)).then(
-      async (res) => {
+    if (!isEditting) {
+      dispatch(groupActions.thunkCreateGroup(groupData)).then(async (res) => {
         console.log(res);
         if (res.errors) {
           setValidationErrors(res.errors);
         } else {
-          if (!isEditting)
-            dispatch(groupActions.thunkAddGroupImage(groupImage, res.id));
+          dispatch(groupActions.thunkAddGroupImage(groupImage, res.id));
           setValidationErrors({});
           history.push(`/groups/${res.id}`);
         }
-      }
-    );
-  };
-
+      });
+    } else {
+      const payload = {};
+      dispatch(groupActions.thunkUpdateGroup(group.id, payload)).then((res) => {
+        console.log(res);
+      });
+    }
+  }
   return (
     <div>
       <form className="CGF" onSubmit={onSubmit}>

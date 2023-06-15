@@ -11,9 +11,15 @@
 }
 
 .ExpNav_Header:hover {
-  border-bottom: 2px solid teal;
+  border-bottom: 2px solid #f65858;
 }
 
 .ExpNav_Li {
   display: flex;
+  font-size: 1rem;
+  margin: 1rem 18.5%;
+}
+
+.ExpNav_Li > * {
+  margin-bottom: 1rem;
 }

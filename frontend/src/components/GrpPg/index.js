@@ -13,10 +13,9 @@ const GrpPg = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector((state) => state.session.user);
-  const group = useSelector((state) => state.groups.singleGroup);
+  const groupData = useSelector((state) => state.groups.singleGroup);
   const eventsState = useSelector((state) => state.events.allEvents);
   const events = Object.values(eventsState);
-  console.log(group);
 
   const sortedEvents = events.sort((a, b) => {
     const startDateA = new Date(a.startDate).getTime();
@@ -37,9 +36,9 @@ const GrpPg = () => {
     dispatch(eventActions.thunkGetGroupEvents(groupId));
   }, [dispatch, groupId]);
 
-  if (!group.id || Number(group.id) !== Number(groupId)) return null;
+  if (!groupData.id || Number(groupData.id) !== Number(groupId)) return null;
 
-  const images = group["GroupImages"];
+  const images = groupData["GroupImages"];
   const previewImageUrl = images.find((img) => img.preview)?.url;
 
   const returnToGroups = () => {
@@ -59,8 +58,8 @@ const GrpPg = () => {
   };
 
   let availableButtons;
-  if (user && group) {
-    if (Number(user.id) === Number(group["Organizer"].id)) {
+  if (user && groupData) {
+    if (Number(user.id) === Number(groupData["Organizer"].id)) {
       availableButtons = [
         <button key={1} className="create-btn" onClick={onClickCreate}>
           Create Event
@@ -71,7 +70,7 @@ const GrpPg = () => {
         <OpenModalButton
           buttonText="Delete Group"
           modalComponent={
-            <CnFrmDelMod type="group" what={group} path="/groups" />
+            <CnFrmDelMod type="group" what={groupData} path="/groups" />
           }
         />,
       ];
@@ -85,7 +84,7 @@ const GrpPg = () => {
   }
 
   return (
-    group && (
+    groupData && (
       <div className="group-details-page">
         <div className="return-nav">
           <button className="return-btn" onClick={returnToGroups}>
@@ -93,25 +92,26 @@ const GrpPg = () => {
           </button>
         </div>
         <div className="group-header">
-            <img
-              src={previewImageUrl}
-              alt="Group Preview"
-              className="group-image"
-            />
+          <img
+            src="https://cdn.discordapp.com/attachments/1008571029804810332/1112799072840065055/Mercado_Bitcoin_people_representing_a_tech_community_in_with_ba_0838be62-0053-4e65-851a-6e17d549a3de.png"
+            alt="Group Preview"
+            className="group-image"
+          />
           <div className="group-info">
-            <h2 className="group-name">{group.name}</h2>
+            <h2 className="group-name">{groupData.name}</h2>
             <p className="group-location">
-              {group.city}, {group.state}
+              {groupData.city}, {groupData.state}
             </p>
             <div className="group-membership">
-              <p>{group.numMembers} Members</p>
+              <p>{groupData.numMembers} Members</p>
               <p>&bull;</p>
-              <p>{group.private ? "Private" : "Public"}</p>
+              <p>{groupData.private ? "Private" : "Public"}</p>
             </div>
             <p>
               Organized by&nbsp;
               <span className="organizer">
-                {group["Organizer"].firstName} {group["Organizer"].lastName}
+                {groupData["Organizer"].firstName}{" "}
+                {groupData["Organizer"].lastName}
               </span>
             </p>
           </div>
@@ -122,20 +122,21 @@ const GrpPg = () => {
             <h3>Organizer</h3>
             <p>
               <span className="organizer-name">
-                {group["Organizer"].firstName} {group["Organizer"].lastName}
+                {groupData["Organizer"].firstName}{" "}
+                {groupData["Organizer"].lastName}
               </span>
             </p>
           </div>
           <div className="group-about">
             <h3>About</h3>
-            <p>{group.about}</p>
+            <p>{groupData.about}</p>
           </div>
           <div className="group-events">
             <h3>Events ({events.length})</h3>
             <div className="events-list">
               {events &&
                 sortedEvents.map((event) => (
-                  <EvCrd key={event.id} event={event} group={group} />
+                  <EvCrd key={event.id} event={event} group={groupData} />
                 ))}
             </div>
           </div>

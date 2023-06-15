@@ -42,10 +42,13 @@
 
 .card__abt {
   grid-area: about;
+  font-weight: 100;
+  font-size: small;
 }
 
 .card__ftr {
   grid-area: footer;
   display: flex;
   gap: 0.5rem;
+
 }

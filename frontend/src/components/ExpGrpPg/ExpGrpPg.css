@@ -1,22 +1,61 @@
-.ExpGrpPg {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.ExpGrpPg h4.gray-header {
+  background-color: gray;
+  color: white;
+  padding: 0.5rem;
+}
+.ExpGrpPg h4.teal-header {
+  color: rgb(128, 0, 0);
+  text-decoration: underline;
 }
 
-.ExpGrpPg h4 {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+.ExpGrpPg .caption {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.ExpGrpPg .group-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ExpGrpPg .group-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.ExpGrpPg .group-item img {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.ExpGrpPg .group-item .dot {
+  margin: 0 0.5rem;
+}
+
+.ExpGrpPg .group-item .group-details {
+  flex-grow: 1;
+}
+
+.ExpGrpPg .group-item .group-description {
+  margin: 0;
+}
+
+.ExpGrpPg .group-item .public-private {
+  margin-right: 0.5rem;
 }
 
 .GrpCrd-Li {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-top: 1rem;
-  border-bottom: 1px px black;
+  font-size: 1rem;
+  margin: 1rem 20%;
+  overflow: hidden;
+  white-space: normal;
+}
+
+
+.GrpCrd-L > * {
+  margin-bottom: 2rem;
 }
