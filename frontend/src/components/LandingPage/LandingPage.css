@@ -67,7 +67,6 @@
   font-size: 1.5rem;
   color: teal;
   border-radius: 30%;
-
 }
 
 .nlp-disabled-link {
@@ -91,4 +90,44 @@
 
 .nlp-join {
   text-align: center;
+  padding: 30px;
+  min-height: 100vh; /* Set a minimum height to ensure the background gradient covers the entire page */
+}
+
+.signup-modal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: antiquewhite;
+  padding: 15px;
+  margin-bottom: 10px; /* Add a margin to create spacing between the form and the image */
+
+}
+
+.signup-form-container {
+  width: 50%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; /* Center the form horizontally */
+  max-width: 400px;
+  height: 800px;
+}
+
+.signup-image-container {
+  width: 50%;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-image {
+  width: 100%;
+  height: 700px;
+  object-fit: cover;
+  border-radius: 10px;
 }

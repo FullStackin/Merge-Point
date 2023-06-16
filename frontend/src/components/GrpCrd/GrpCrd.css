@@ -1,5 +1,5 @@
 .card {
-  --image-size: 175px;
+  --image-size: 190px;
   display: grid;
   grid-template-areas:
     "image header"
@@ -8,8 +8,8 @@
   grid-template-columns: var(--image-size) 1fr;
   gap: 0rem 1rem;
   margin-bottom: 1rem;
-  font-size: 1rem;
   cursor: pointer;
+  border-top: 1px solid gray
 }
 
 .card:not(:last-of-type) {
@@ -50,5 +50,4 @@
   grid-area: footer;
   display: flex;
   gap: 0.5rem;
-
 }

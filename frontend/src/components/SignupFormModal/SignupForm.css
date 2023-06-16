@@ -1,8 +1,8 @@
 .sign-up-modal {
   width: 390px;
-  height:1000px;
+  height: 750px;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: whitesmoke;
 }
 
 h1 {
@@ -21,35 +21,25 @@ input {
   border: 1px solid #cccccc;
   border-radius: 5px;
 }
-/*
-.SignupFormModal__submit-btn {
-  padding: 10px;
-  background-color: #e32359;
+
+.signup-button {
+  /* Button styles */
+  background-color: #f65858;
   color: white;
-  border-radius: 5px;
-  box-shadow: 2px 2px 2px black;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
   cursor: pointer;
+  width: 300px;
 }
 
-.SignupFormModal__submit-btn:disabled {
-  background-color: #ccc;
+.signup-button:hover {
+  /* Styles when the button is hovered */
+  background-color: red;
 }
 
-
-.SignupFormModal__errors {
-  color: red;
-  margin-top: 10px;
+.signup-button:disabled {
+  /* Styles when the button is disabled */
+  background-color: gray;
+  cursor: not-allowed;
 }
-
-.SignupFormModal__title {
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.SignupFormModal__form {
-  display: flex;
-  font-size: 12px;
-  flex-direction: column;
-  gap: 0.6rem;
-} */

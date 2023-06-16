@@ -25,8 +25,7 @@ const EvCrd = ({ event, group }) => {
       </header>
       <p className="evnt-description">
         Test test test test Test test test test Test test test test Test test
-        test test Test test test test Test test test test Test test test test
-        Test test test test
+        test test Test
       </p>
     </article>
   );

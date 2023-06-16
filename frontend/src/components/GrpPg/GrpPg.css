@@ -3,8 +3,8 @@
 }
 
 .group-details-page {
-  width: 1200px;
-  margin: auto;
+  font-size: 1rem;
+  margin: 1rem 20%;
 }
 
 .group-header {
@@ -19,7 +19,6 @@
     "image actions";
   grid-template-rows: 2fr 100px 1fr;
   grid-template-columns: fit-content 1fr;
-  border-bottom: 2px solid black;
 }
 
 .group-header * {
@@ -29,9 +28,16 @@
 .group-image {
   grid-area: image;
   background-color: darkcyan;
-  width: 700px;
-  height: 100%;
+  width: 650px;
+  height: 400px;
   align-self: center;
+}
+
+.JoinTheGrp {
+  position: relative;
+  top: 229px;
+  background-color: #f65858;
+  color: white;
 }
 
 .group-name {
@@ -39,12 +45,8 @@
 }
 
 .group-info {
-  font-size: 1.2rem;
-  grid-area: info;
-}
-
-.group-info > * {
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  top: 100px
 }
 
 .group-membership {

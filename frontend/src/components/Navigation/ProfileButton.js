@@ -43,25 +43,31 @@ const ProfileButton = ({ user }) => {
 
   const ulClassName = "profile-dropdown " + (showMenu ? "" : "hidden ");
 
-  return (
-    <>
-      <button className="profile-button" onClick={openMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
-      <ul className={ulClassName} ref={menuRef}>
-        <li>Hello, {user.firstName}</li>
-        <li>
-          {user.firstName} {user.lastName}
-        </li>
-        <li>{user.email}</li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-          <button onClick={viewGroups}>View Groups</button>
-          <button onClick={viewEvents}>View Events</button>
-        </li>
-      </ul>
-    </>
-  );
+ return (
+  <>
+    <button className="profile-button" onClick={openMenu}>
+      <i className="fas fa-user-circle" />
+    </button>
+    <ul className={ulClassName} ref={menuRef}>
+      <li>Hello, {user.firstName}</li>
+      <li>
+        {user.firstName} {user.lastName}
+      </li>
+      <li>{user.email}</li>
+      <li>
+        <button className="custom-button" onClick={logout}>
+          Log Out
+        </button>
+        <button className="custom-button" onClick={viewGroups}>
+          View Groups
+        </button>
+        <button className="custom-button" onClick={viewEvents}>
+          View Events
+        </button>
+      </li>
+    </ul>
+  </>
+);
 };
 
 export default ProfileButton;

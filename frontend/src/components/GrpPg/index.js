@@ -108,12 +108,14 @@ const GrpPg = () => {
               <p>{groupData.private ? "Private" : "Public"}</p>
             </div>
             <p>
-              Organized by&nbsp;
+              Organized by &nbsp;
               <span className="organizer">
                 {groupData["Organizer"].firstName}{" "}
                 {groupData["Organizer"].lastName}
               </span>
             </p>
+
+            <button className="JoinTheGrp">Join this group</button>
           </div>
           <div className="group-actions">{availableButtons}</div>
         </div>

@@ -34,28 +34,47 @@ ul {
   font-weight: bold;
   border: none;
   cursor: pointer;
-
 }
 
 .session-li {
   display: flex;
   background-color: white;
   position: relative;
-  gap: 0.09rem;
+  gap: 1rem;
+}
+
+.logEmIn {
 
 }
 
+.signEmUp{
+  
+}
 .profile-button {
   width: 4rem;
   align-self: end;
+  border-radius: 40px;
+  color: white;
+  background-color: #00798A
+
 }
 
 .profile-dropdown {
   background-color: beige;
-  border: 1px dashed black;
+  border: 1px solid black;
   position: absolute;
   top: 100%;
   right: 0%;
+}
+
+/* CSS class for the buttons with the specified color */
+.custom-button {
+  background-color: #f65858;
+  color: white;
+  border-radius: 20%;
+  padding: 8px 16px;
+  margin-right: 8px;
+  cursor: pointer;
 }
 
 .hidden {
