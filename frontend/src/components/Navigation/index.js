@@ -15,23 +15,29 @@ function Navigation({ isLoaded }) {
     history.push("/groups/new");
   };
 
-  let sessionLinks;
-  let sessionClassName = "session-li";
+  let sessionLinks = "topPage";
+  let loginClassName = "login-li";
+  let signupClassName = "signup-li";
+
   if (sessionUser) {
     sessionLinks = (
-      <li className={sessionClassName}>
-        <button onClick={clickNewGroup}>Start a MergePoint</button>
+      <li className={sessionLinks}>
+        <span onClick={clickNewGroup}>Start a new group</span>
         <ProfileButton user={sessionUser} />
       </li>
     );
   } else {
     sessionLinks = (
-      <li className={sessionClassName}>
+      <li className={sessionLinks}>
+        <span className="login">
+          <OpenModalButton
+            className={loginClassName}
+            buttonText="Log In"
+            modalComponent={<LoginFormModal showDemoUser={false} />}
+          />
+        </span>
         <OpenModalButton
-          buttonText="Log In"
-          modalComponent={<LoginFormModal showDemoUser={false} />}
-        />
-        <OpenModalButton
+          className={signupClassName}
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />

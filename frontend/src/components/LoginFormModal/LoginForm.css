@@ -1,17 +1,23 @@
 .login-modal > h1 {
   text-align: center;
   margin: 1rem 0px;
+}
 
+.login-modal h1 {
+  color: black;
 }
 
 form {
   width: 300px;
-  height: 250px;
+  height: 300px;
   padding: 1rem 3rem;
   display: flex;
+  font: black;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  background-color: whitesmoke;
 }
 
 input {
@@ -19,25 +25,42 @@ input {
   font-size: 2rem;
 }
 
-button.login-button {
+button[type="submit"] {
   display: flex;
   font-size: 1rem;
   margin-top: 1rem;
   padding: 0.9rem;
-  width: 115%;
+  width: 100%;
+  height: 50px;
   justify-content: center;
   align-items: center;
   background-color: #f65858;
+  cursor: pointer;
+}
+button[type="submit"]:disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
 
+button[type="submit"]:hover {
+  background-color: red;
+}
 
 button.demo-user-button {
   display: flex;
-  font-size: 1rem;
-  margin-top: 1rem;
+  font-size: 1.2rem;
+  margin-left: 5rem;
+  text-align: center;
   justify-content: center;
   align-items: center;
-  /* background-color: #f65858; */
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button.demo-user-button u {
+  text-decoration: underline;
 }
 
 .error {

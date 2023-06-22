@@ -113,16 +113,13 @@ const LoginFormModal = () => {
         <button type="submit" disabled={!isEnabled}>
           {isDemoUserClicked ? "Log In as Demo User" : "Log In"}
         </button>
-        {isDemoUserClicked && (
-          <button type="button" onClick={handleModalClose}>
-            Close Demo User
-          </button>
-        )}
-        {!isDemoUserClicked && (
-          <button type="button" onClick={handleDemoUserClick}>
-            Log In as Demo User
-          </button>
-        )}
+        <button
+          className="demo-user-button"
+          type="button"
+          onClick={handleDemoUserClick}
+        >
+          <u>Demo User</u>
+        </button>
       </form>
     </div>
   );

@@ -117,21 +117,9 @@ const LandingPage = () => {
         </article>
         {!session.user && (
           <div className="nlp-join">
-            <button onClick={handleJoinMergePoint}>Join MergePoint</button>
-            {showSignupForm && (
-              <div className="signup-modal" ref={signupFormRef}>
-                <div className="signup-form-container">
-                  <SignupFormModal />
-                </div>
-                <div className="signup-image-container">
-                  <img
-                    src="https://cdn.discordapp.com/attachments/1072899954525356072/1116215179743596624/itsava_a_simulated_universe_being_controlled_by_a_future_civili_08454360-caf7-45fd-96cd-36e9cd0c102f.png"
-                    alt="Signup Image"
-                    className="signup-image"
-                  />
-                </div>
-              </div>
-            )}
+            <button onClick={handleJoinMergePoint} className="nlp-Button">
+              Join MergePoint
+            </button>
           </div>
         )}
       </div>

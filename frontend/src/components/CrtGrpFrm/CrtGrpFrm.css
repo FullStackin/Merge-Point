@@ -1,16 +1,18 @@
 .CGF {
   margin: auto;
   width: 80%;
-  max-width: 800px;
+  max-width: 50rem;  /* Converted px to rem for better responsiveness */
   background-color: aliceblue;
+  margin-top: 28rem;
 }
+
 
 .CGF * {
   font-size: 1.1rem;
 }
 
 .CGF .error {
-  color: maroon;
+  color: red;
   font-weight: bold;
   margin-bottom: 1rem;
 }
@@ -18,11 +20,19 @@
 .location-inputs {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-gap: 2rem;
+}
+
+.location-inputs input {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
 .CGF h3 {
   font-size: 1.9rem;
-  margin: 0px;
+  margin: 0;
 }
 
 .CGF section {
@@ -36,6 +46,10 @@
   border-bottom: 2px solid #ccc;
 }
 
+.whatName{
+  width: 80%;
+}
+
 .CGF textarea,
 .CGF input {
   margin-right: 1rem;
@@ -43,16 +57,19 @@
   border: 2px solid black;
 }
 
-.CGF input {
-  width: 300px;
-}
-
-.CGF textarea {
-  width: 750px;
-}
-
 .CGF button {
   text-align: center;
   margin: auto;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
+}
+
+/* Media Query for smaller screens */
+@media screen and (max-width: 600px) {
+  .CGF {
+    width: 95%;
+  }
+
+  .location-inputs {
+    grid-template-columns: 1fr;
+  }
 }

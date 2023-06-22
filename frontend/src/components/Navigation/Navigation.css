@@ -1,6 +1,7 @@
 .mNav {
   margin: 0px;
   padding: 1rem;
+  background-color: white;
   border-bottom: 1px solid gray;
 }
 
@@ -20,6 +21,7 @@ ul {
   list-style: none;
   margin: 0px;
   padding: 0px;
+  gap: 1rem;
 }
 
 .mNav > ul {
@@ -29,42 +31,84 @@ ul {
 }
 
 .mNav button {
-  padding: 0.6rem 1.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 10px;
+  font-size: 15px;
   cursor: pointer;
 }
 
-.session-li {
+.mNav button.left-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  cursor: auto;
+}
+
+.login-link {
+  color: wheat;
+  cursor: pointer;
+}
+
+.topPage {
   display: flex;
-  background-color: white;
+  align-items: center;
+  gap: 15px;
+}
+
+.login-li {
+  background-color: whitesmoke;
+}
+
+.signup-li {
+  background-color: #75d2de;
+}
+
+.profile-container {
   position: relative;
-  gap: 1rem;
 }
 
-.logEmIn {
-
-}
-
-.signEmUp{
-  
-}
 .profile-button {
-  width: 4rem;
   align-self: end;
-  border-radius: 40px;
+  border-radius: 30px;
   color: white;
-  background-color: #00798A
-
+  background-color: #f65858;
 }
 
-.profile-dropdown {
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.popup-container {
+  position: absolute;
+  top: 19%;
+  left: 87%;
+  transform: translate(-50%, -50%);
   background-color: beige;
   border: 1px solid black;
-  position: absolute;
-  top: 100%;
-  right: 0%;
+  padding: 1rem;
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-info p {
+  margin-bottom: 0.5rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
 /* CSS class for the buttons with the specified color */

@@ -97,8 +97,8 @@ const CrtGrpFrm = ({ group, isEditting }) => {
       private: true,
       previewImage: url,
     };
-    // if (isPrivate === "Public") groupData.private = false;
-    // else if (isPrivate === "Private") groupData.private = true;
+    if (isPrivate === "Public") groupData.private = false;
+    else if (isPrivate === "Private") groupData.private = true;
 
     const groupImage = {
       id: isEditting ? image?.id : undefined,
@@ -123,9 +123,9 @@ const CrtGrpFrm = ({ group, isEditting }) => {
         console.log(res);
       });
     }
-  }
+  };
   return (
-    <div>
+    <div style={{ paddingTop: "2rem" }}>
       <form className="CGF" onSubmit={onSubmit}>
         <section>
           <p>Start Organizing MergePoints!</p>
@@ -171,6 +171,7 @@ const CrtGrpFrm = ({ group, isEditting }) => {
             value={name}
             type="text"
             placeholder="MergePoint Name"
+            className="whatName"
             onChange={(e) => {
               setName(e.target.value);
               console.log("name", name);

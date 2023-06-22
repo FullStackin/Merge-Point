@@ -1,18 +1,24 @@
-/* TODO Add site wide styles */
+/* TODO Add site-wide styles */
 * {
   font-family: "Gloock", serif;
   font-weight: 200;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
 
 #modal-content {
   overflow: hidden;
   border-radius: 0.5rem;
 }
 
-
 button {
-  padding: 0.6rem 1.5rem;
+  padding: 1rem 1rem;
   font-weight: bold;
   font-size: 1rem;
+  align-self: flex-start;
+  justify-content: flex-start;
+  text-align: flex-start;
 }
