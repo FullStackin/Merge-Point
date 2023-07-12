@@ -17,8 +17,8 @@
     "image info"
     "image ."
     "image actions";
-  grid-template-rows: 2fr 100px 1fr;
-  grid-template-columns: fit-content 1fr;
+  grid-template-rows: 2fr 1fr;
+  grid-template-columns: 500px auto;
   border-bottom: 2px solid black;
 }
 
@@ -29,9 +29,8 @@
 .group-image {
   grid-area: image;
   background-color: darkcyan;
-  width: 700px;
-  height: 100%;
-  align-self: center;
+  width: 500px;
+  align-self: top;
 }
 
 .group-name {
@@ -55,9 +54,8 @@
 .group-actions {
   grid-area: actions;
   display: flex;
-  justify-content: start;
-  align-items: start;
-  flex-direction: column;
+  justify-content: flex;
+  align-items: f;
   gap: 0.8rem;
   padding-left: 0.5rem;
   margin-top: auto;
@@ -72,7 +70,6 @@
 }
 
 .return-nav {
-  text-align: center;
 }
 
 .return-btn {
@@ -91,11 +88,16 @@
 
 .organizer-name {
   font-weight: bold;
-  text: rgb(185, 185, 185);
+  color: #898989;
+}
+
+.group-about p {
+  color: #898989;
 }
 
 .events-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  flex-direction: column;
+  width: 500px;
   gap: 1rem;
 }

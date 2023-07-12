@@ -3,12 +3,15 @@
   display: grid;
   grid-template-areas:
     "image header"
-    "about about";
-  grid-template-columns: var(--image-size) 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  cursor: pointer;
+    "image about"
+    "image footer";
+    grid-template-columns: var(--image-size) 1fr;
+    gap: 0rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #898989;
+    cursor: pointer;
 }
 
 .evn_crd:not(:last-of-type) {
@@ -22,7 +25,7 @@
 }
 
 .evn_crd_image {
-  width: var(--image-size);
+  /* width: var(--image-size); */
   grid-area: image;
 }
 
@@ -34,16 +37,22 @@
 .evn_crd_header {
   grid-area: header;
 }
+.evn_crd_date {
+  margin-bottom: 0.5rem;
+}
 
 .evn_crd_title {
+  margin-bottom: 0.5rem;
 }
 
 .evn_crd_location {
   text-transform: uppercase;
+  margin-bottom: 0.5rem;
 }
 
 .evnt-description {
   grid-area: about;
+  color: #898989
 }
 
 .evn_crd_footer {

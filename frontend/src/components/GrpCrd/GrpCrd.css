@@ -9,6 +9,8 @@
   gap: 0rem 1rem;
   margin-bottom: 1rem;
   font-size: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #898989;
   cursor: pointer;
 }
 
@@ -34,15 +36,19 @@
 }
 
 .card__ttl {
+  margin-bottom: 0.25rem;
 }
 
 .card__loc {
+  margin-bottom: 0.25rem;
   text-transform: uppercase;
 }
 
 .card__abt {
   grid-area: about;
-  font-weight: 100;
+  margin-bottom: 0.25rem;
+  font-weight: 400;
+  color: #898989;
   font-size: small;
 }
 

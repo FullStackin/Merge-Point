@@ -1,8 +1,8 @@
 .sign-up-modal {
   width: 390px;
-  height:1000px;
   padding: 20px;
   background-color: #ffffff;
+  height: auto;
 }
 
 h1 {

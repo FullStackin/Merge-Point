@@ -15,7 +15,6 @@ const ExpNav = () => {
             Groups
           </NavLink>
         </li>
-        <p>M</p>
       </ul>
     </nav>
   );

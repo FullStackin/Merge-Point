@@ -37,6 +37,7 @@
 
 .nlp-about {
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .nlp-about > h2 {
@@ -67,9 +68,13 @@
   font-size: 1.5rem;
   color: teal;
   border-radius: 30%;
-
+  margin: 20px 0
 }
 
+.nlp-nav-card__about{
+  text-align: center;
+  margin: 0;
+}
 .nlp-disabled-link {
   pointer-events: none;
   color: grey;
