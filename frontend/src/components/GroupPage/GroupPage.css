@@ -28,8 +28,9 @@
 
 .group-image {
   grid-area: image;
-  background-color: darkcyan;
+  background-color: #00798a;
   width: 500px;
+  height: 500px;
   align-self: top;
 }
 
@@ -74,7 +75,7 @@
 
 .return-btn {
   font-size: 1rem;
-  background-color: #2196f3;
+  background-color: #00798a;
   color: white;
   border-radius: 4px;
   border: none;

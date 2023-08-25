@@ -116,8 +116,6 @@ const GroupPage = () => {
                 {groupData["Organizer"].lastName}
               </span>
             </p>
-
-            <button className="JoinTheGrp">Join this group</button>
           </div>
           <div className="group-actions">{availableButtons}</div>
         </div>

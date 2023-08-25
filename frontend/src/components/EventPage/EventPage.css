@@ -14,7 +14,7 @@
   grid-area: image;
   width: 650px;
   height: 500px;
-  padding-bottom: 100%;
+  padding-bottom: 50%;
   align-self: center;
 }
 
@@ -28,6 +28,9 @@
 
 .event-details__group-details {
   margin-left: 1rem;
+}
+
+.event-details__group-description {
 }
 
 .event-details__group-image {
