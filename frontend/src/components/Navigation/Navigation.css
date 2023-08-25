@@ -1,80 +1,64 @@
 .mNav {
-  margin: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
   padding: 1rem;
-  background-color: white;
-  border-bottom: 1px solid gray;
-}
-
-.mNav * {
-  margin: 0px;
+  border-bottom: 1px solid #ccc;
 }
 
 .nav-logo a {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
   text-decoration: none;
-  font-family: "Gloock";
   color: #f65858;
 }
 
 ul {
   list-style: none;
-  margin: 0px;
-  padding: 0px;
+  display: flex;
+  align-items: center;
   gap: 1rem;
-}
-
-.mNav > ul {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.mNav button {
-  padding: 0.5rem 1rem;
-  margin-right: 10px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.mNav button.left-button {
-  background: none;
-  border: none;
+  margin: 0;
   padding: 0;
-  font-size: inherit;
-  cursor: auto;
 }
 
-.login-link {
-  color: wheat;
-  cursor: pointer;
-}
-
-.topPage {
+.right-group {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 1rem;
+  margin-left: auto;
 }
 
-.login-li {
-  background-color: whitesmoke;
+.startIt{
+color: #00798a;
 }
 
+.login-li,
 .signup-li {
-  background-color: #75d2de;
-}
-
-.profile-container {
-  position: relative;
+  background-color: #f65858;
+  color: white;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .profile-button {
-  align-self: end;
-  border-radius: 30px;
-  color: white;
-  background-color: #f65858;
+  border: none;
+  background: none;
+  color: #f65858;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
+
+.right-group span,
+.profile-button,
+.custom-button {
+  cursor: pointer;
+}
+/* ProfileButton.css */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -86,41 +70,63 @@ ul {
 }
 
 .popup-container {
-  position: absolute;
-  top: 19%;
-  left: 87%;
-  transform: translate(-50%, -50%);
-  background-color: beige;
-  border: 1px solid black;
-  padding: 1rem;
+  position: fixed;
+  width: 280px;
+  top: 80px;
+  right: 50px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .popup-content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1rem;
 }
 
 .user-info p {
-  margin-bottom: 0.5rem;
+  margin: 0.2rem 0;
+  cursor: default;
+  color: #333;
+  font-size: 0.9rem;
 }
 
 .buttons {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
   margin-top: 1rem;
 }
 
-/* CSS class for the buttons with the specified color */
 .custom-button {
   background-color: #f65858;
   color: white;
-  border-radius: 20%;
-  padding: 8px 16px;
-  margin-right: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 
-.hidden {
-  display: none;
+
+.nlp-join {
+  text-align: center;
+  padding: 30px;
+}
+
+.nlp-Button {
+  background-color: #00798a;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 3px 4px 10px rgba(0, 0, 0, 100);
+  cursor: pointer;
+}
+.nlp-Button:hover {
+  background-color: #099caf;
+  box-shadow: 3px 4px 10px rgba(0, 0, 0, 100);
 }

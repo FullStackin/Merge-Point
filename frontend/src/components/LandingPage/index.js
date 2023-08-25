@@ -1,25 +1,36 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./LandingPage.css";
 import SignupFormModal from "../SignupFormModal/index";
 import "../SignupFormModal/SignupForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTwitter,
+  faInstagram,
+  faGithub,
+  faLinkedin,
+} from "@fortawesome/free-brands-svg-icons";
 
 const LandingPage = () => {
   const history = useHistory();
   const session = useSelector((state) => state.session);
-  const [showSignupForm, setShowSignupForm] = useState(false);
-  const signupFormRef = useRef(null);
+  const [showSignupModal, setShowSignupModal] = useState(false);
 
   const startGroupClassName =
     "nlp-card__title " + (session && session.user ? "" : "nlp-disabled-link");
 
+  const handleModalClose = () => {
+    setShowSignupModal(false);
+  };
+
   const handleJoinMergePoint = () => {
-    setShowSignupForm(true);
+    setShowSignupModal(true);
     if (signupFormRef.current) {
       signupFormRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+  const signupFormRef = useRef(null);
 
   return (
     <>
@@ -115,11 +126,41 @@ const LandingPage = () => {
             </li>
           </ul>
         </article>
+        <div className="nlp-join">
+          <button onClick={handleJoinMergePoint} className="nlp-Button">
+            Join MergePoint
+          </button>
+        </div>
         {!session.user && (
-          <div className="nlp-join">
-            <button onClick={handleJoinMergePoint} className="nlp-Button">
-              Join MergePoint
-            </button>
+          <div className="social-media-links">
+            <a
+              href="https://www.linkedin.com/in/omarelsahlah"
+              target="_blank"
+              rel="Socials"
+            >
+              <FontAwesomeIcon icon={faLinkedin} size="lg" />
+            </a>
+            <a
+              href="https://www.github.com/fullstackin"
+              target="_blank"
+              rel="Socials"
+            >
+              <FontAwesomeIcon icon={faGithub} size="lg" />
+            </a>
+            <a
+              href="https://www.twitter.com/TallTechTitan"
+              target="_blank"
+              rel="Socials"
+            >
+              <FontAwesomeIcon icon={faTwitter} size="lg" />
+            </a>
+            <a
+              href="https://www.instagram.com/TallTechTitan"
+              target="_blank"
+              rel="Socials"
+            >
+              <FontAwesomeIcon icon={faInstagram} size="lg" />
+            </a>
           </div>
         )}
       </div>

@@ -110,16 +110,18 @@ const LoginFormModal = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" disabled={!isEnabled}>
-          {isDemoUserClicked ? "Log In as Demo User" : "Log In"}
-        </button>
-        <button
-          className="demo-user-button"
-          type="button"
-          onClick={handleDemoUserClick}
-        >
-          <u>Demo User</u>
-        </button>
+        <div className="button-container">
+          <button type="submit" className="login-button" disabled={!isEnabled}>
+            {isDemoUserClicked ? "Log In as Demo User" : "Log In"}
+          </button>
+          <button
+            className="demo-user-button"
+            type="button"
+            onClick={handleDemoUserClick}
+          >
+            <u>Demo User</u>
+          </button>
+        </div>
       </form>
     </div>
   );

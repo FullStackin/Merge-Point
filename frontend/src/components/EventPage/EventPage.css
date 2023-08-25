@@ -1,0 +1,88 @@
+.event-details-page {
+  margin: 1rem 20%;
+}
+
+.return-nav {
+  margin: 1rem 0;
+}
+
+.event-details__host {
+  margin: 0;
+}
+
+.event-details__image {
+  grid-area: image;
+  width: 650px;
+  height: 500px;
+  padding-bottom: 100%;
+  align-self: center;
+}
+
+.event-details__group-info {
+  grid-area: group-info;
+  background-color: whitesmoke;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.event-details__group-details {
+  margin-left: 1rem;
+}
+
+.event-details__group-image {
+  width: 200px;
+  height: 150px;
+}
+
+.event-details__group-name {
+  font-size: 1.5rem;
+}
+
+.event-details__event-info {
+  grid-area: event-info;
+  /* background-color: whitesmoke; */
+  padding: 1.5rem;
+}
+
+.event-details__date {
+  display: grid;
+  gap: 0.5rem 1rem;
+  grid-template-columns: auto 1fr;
+}
+
+.event-details__name {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.event-details__about {
+  margin-top: -40rem;
+}
+
+.delete-event:hover {
+  border-color: maroon;
+  background-color: maroon;
+  color: white;
+}
+
+.event-details-page * {
+  font-size: 1rem;
+}
+
+.event-details__event-info > *:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+.event-details__actions {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+}
+
+.EventCard-li {
+  font-size: 1rem;
+  margin: 1rem 20%;
+  overflow: hidden;
+  white-space: normal;
+}

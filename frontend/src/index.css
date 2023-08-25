@@ -1,7 +1,6 @@
 /* TODO Add site-wide styles */
 * {
   font-family: "Gloock", serif;
-  font-weight: 200;
 }
 
 body {
@@ -17,8 +16,5 @@ body {
 button {
   padding: 1rem 1rem;
   font-weight: bold;
-  font-size: 1rem;
-  align-self: flex-start;
-  justify-content: flex-start;
-  text-align: flex-start;
+  cursor: pointer;
 }

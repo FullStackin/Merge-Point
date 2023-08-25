@@ -1,0 +1,60 @@
+.ExploreGroupPage h4.gray-header {
+  background-color: gray;
+  color: white;
+  padding: 0.5rem;
+}
+.ExploreGroupPage h4.teal-header {
+  color: rgb(254, 49, 49);
+  text-decoration: underline;
+}
+
+.ExploreGroupPage .caption {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.ExploreGroupPage .group-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ExploreGroupPage .group-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.ExploreGroupPage .group-item img {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.ExploreGroupPage .group-item .dot {
+  margin: 0 0.5rem;
+}
+
+.ExploreGroupPage .group-item .group-details {
+  flex-grow: 1;
+}
+
+.ExploreGroupPage .group-item .group-description {
+  margin: 0;
+}
+
+.ExploreGroupPage .group-item .public-private {
+  margin-right: 0.5rem;
+}
+
+.GroupCard-Li {
+  font-size: 1rem;
+  margin: 1rem 20%;
+  overflow: hidden;
+  white-space: normal;
+}
+
+.GroupCard-L > * {
+  margin-bottom: 2rem;
+}

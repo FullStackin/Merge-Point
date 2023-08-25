@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom";
-import "./EvCrd.css";
+import "./EventCard.css";
 
-const EvCrd = ({ event, group }) => {
+const EventCard = ({ event, group }) => {
   const history = useHistory();
 
   const onClick = () => {
@@ -23,12 +23,17 @@ const EvCrd = ({ event, group }) => {
             : "Online"}
         </p>
       </header>
-      <p className="evnt-description">
-        Test test test test Test test test test Test test test test Test test
-        test test Test
-      </p>
+      <p className="description">{event.description}</p>
+      <footer className="evn_crd_footer">
+        <p>
+          {event.participants}{" "}
+          {event.participants === 1 ? "participant" : "participants"}
+        </p>
+        <p>&bull;</p>
+        <p>{event.type}</p>
+      </footer>
     </article>
   );
 };
 
-export default EvCrd;
+export default EventCard;

@@ -1,4 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+// ProfileButton.js
+import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
 
@@ -6,6 +8,7 @@ const ProfileButton = ({ user }) => {
   const dispatch = useDispatch();
   const menuRef = useRef();
   const [showMenu, setShowMenu] = useState(false);
+  const history = useHistory();
 
   const toggleMenu = (e) => {
     e.stopPropagation();
@@ -29,17 +32,20 @@ const ProfileButton = ({ user }) => {
     };
   }, []);
 
-  const logout = (e) => {
+  const logout = async (e) => {
     e.preventDefault();
-    dispatch(sessionActions.deleteSessionThunk());
+    await dispatch(sessionActions.deleteSessionThunk());
+    history.push("/");
   };
 
-  const viewGroups = (e) => {
-    e.preventDefault();
+  const viewGroups = () => {
+    closeMenu();
+    history.push("/groups");
   };
 
-  const viewEvents = (e) => {
-    e.preventDefault();
+  const viewEvents = () => {
+    closeMenu();
+    history.push("/events");
   };
 
   return (

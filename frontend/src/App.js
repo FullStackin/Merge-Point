@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "./store/session";
 
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
-import ExpGrpPg from "./components/ExpGrpPg";
-import GrpPg from "./components/GrpPg";
-import FnEvPg from "./components/FnEvPg";
-import EvPg from "./components/EvPg";
-import CrtGrpFrm from "./components/CrtGrpFrm";
-import EdGrpFrm from "./components/EdGrpFrm";
-import CrtEvFrm from "./components/CrtEvFrm";
-import EdEvFrm from "./components/EdEvFrm";
+import ExploreGroupPage from "./components/ExploreGroupPage";
+import GroupPage from "./components/GroupPage";
+import FindEventPage from "./components/FindEventPage";
+import EventPage from "./components/EventPage";
+import CreateGroupForm from "./components/CreateGroupForm";
+import EditGroupForm from "./components/EditGroupForm";
+import CreateEventForm from "./components/CreateEventForm";
+import EditEventForm from "./components/EditEventForm";
+// import Register from "./components/Register";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,29 +31,32 @@ function App() {
           <Route exact path="/">
             <LandingPage />
           </Route>
+          {/* <Route exact path="/register">
+            <Register />
+          </Route> */}
           <Route exact path="/groups">
-            <ExpGrpPg />
+            <ExploreGroupPage />
           </Route>
           <Route path="/groups/new">
-            <CrtGrpFrm />
+            <CreateGroupForm />
           </Route>
           <Route path="/groups/:groupId/edit">
-            <EdGrpFrm />
+            <EditGroupForm />
           </Route>
           <Route path="/groups/:groupId/events/new">
-            <CrtEvFrm />
+            <CreateEventForm />
           </Route>
           <Route path="/groups/:groupId">
-            <GrpPg />
+            <GroupPage />
           </Route>
           <Route exact path="/events">
-            <FnEvPg />
+            <FindEventPage />
           </Route>
           <Route path="/events/:eventId/edit">
-            <EdEvFrm />
+            <EditEventForm />
           </Route>
           <Route path="/events/:eventId">
-            <EvPg />
+            <EventPage />
           </Route>
         </Switch>
       )}

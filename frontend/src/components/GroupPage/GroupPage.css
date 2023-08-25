@@ -1,0 +1,103 @@
+.return-nav {
+  margin: 1rem 0px;
+}
+
+.group-details-page {
+  width: 1200px;
+  margin: auto;
+}
+
+.group-header {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  font-size: 1rem;
+  grid-template-areas:
+    "image info"
+    "image ."
+    "image actions";
+  grid-template-rows: 2fr 1fr;
+  grid-template-columns: 500px auto;
+  border-bottom: 2px solid black;
+}
+
+.group-header * {
+  margin: 0px;
+}
+
+.group-image {
+  grid-area: image;
+  background-color: darkcyan;
+  width: 500px;
+  align-self: top;
+}
+
+.group-name {
+  font-size: 2rem;
+}
+
+.group-info {
+  font-size: 1.2rem;
+  grid-area: info;
+}
+
+.group-info > * {
+  margin-bottom: 1rem;
+}
+
+.group-membership {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.group-actions {
+  grid-area: actions;
+  display: flex;
+  justify-content: flex;
+  align-items: f;
+  gap: 0.8rem;
+  padding-left: 0.5rem;
+  margin-top: auto;
+}
+
+.join-btn {
+  background-color: red;
+  color: whitesmoke;
+  box-shadow: 10px 5px black;
+  height: 50px;
+  width: 200px;
+}
+
+.return-nav {
+}
+
+.return-btn {
+  font-size: 1rem;
+  background-color: #2196f3;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.group-location {
+  margin-bottom: 0.5rem;
+}
+
+.organizer-name {
+  font-weight: bold;
+  color: #898989;
+}
+
+.group-about p {
+  color: #898989;
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  gap: 1rem;
+}
