@@ -11,7 +11,7 @@ options.tableName = "Memberships";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      options,
+      options.tableName,
       [
         {
           userId: 1,
@@ -33,6 +33,36 @@ module.exports = {
           groupId: 4,
           status: "co-host",
         },
+        {
+          userId: 5,
+          groupId: 1,
+          status: "member",
+        },
+        {
+          userId: 6,
+          groupId: 2,
+          status: "member",
+        },
+        {
+          userId: 7,
+          groupId: 3,
+          status: "member",
+        },
+        {
+          userId: 8,
+          groupId: 4,
+          status: "member",
+        },
+        {
+          userId: 9,
+          groupId: 1,
+          status: "pending",
+        },
+        {
+          userId: 10,
+          groupId: 2,
+          status: "co-host",
+        },
       ],
       {}
     );
@@ -41,9 +71,9 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(
-      options,
+      options.tableName,
       {
-        userId: { [Op.in]: [1, 2, 3, 4] },
+        userId: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
       },
       {}
     );

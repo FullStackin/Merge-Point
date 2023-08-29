@@ -28,6 +28,36 @@ module.exports = {
         url: "https://cdn.discordapp.com/attachments/1108279175581794324/1116271314542547034/Group3.png",
         preview: true,
       },
+      {
+        groupId: 5,
+        url: "/",
+        preview: true,
+      },
+      {
+        groupId: 6,
+        url: "/",
+        preview: true,
+      },
+      {
+        groupId: 7,
+        url: "/",
+        preview: true,
+      },
+      {
+        groupId: 8,
+        url: "/",
+        preview: true,
+      },
+      {
+        groupId: 9,
+        url: "/",
+        preview: true,
+      },
+      {
+        groupId: 10,
+        url: "/",
+        preview: true,
+      },
     ];
     await queryInterface.bulkInsert("GroupImages", groupImagesData, {});
   },
@@ -41,7 +71,7 @@ module.exports = {
       options,
       {
         groupId: {
-          [Op.in]: [1, 2, 3, 4],
+          [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
       },
       {}

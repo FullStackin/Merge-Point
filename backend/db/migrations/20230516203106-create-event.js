@@ -1,4 +1,8 @@
 "use strict";
+let options = {};
+if (process.env.NODE_ENV === "production") {
+  options.schema = process.env.SCHEMA;
+}
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -15,12 +19,12 @@ module.exports = {
           allowNull: true,
           type: Sequelize.INTEGER,
           references: {
-            model: "Venues"
+            model: "Venues",
           },
         },
         groupId: {
           type: Sequelize.INTEGER,
-          onDelete: "CASCADE", // Correct capitalization
+          onDelete: "CASCADE",
           references: {
             model: "Groups",
           },
@@ -57,13 +61,11 @@ module.exports = {
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
       },
-      {
-        // Use the options object directly here
-        schema: process.env.NODE_ENV === "production" ? process.env.SCHEMA : null,
-      }
+      options
     );
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Events");
+    options.tableName = "Events";
+    await queryInterface.dropTable(options);
   },
 };
