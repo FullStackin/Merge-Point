@@ -19,21 +19,24 @@ module.exports = {
         },
         organizerId: {
           type: Sequelize.INTEGER,
-          references: {
-            model: "Users",
-          },
+          allowNull: false,
+          references: { model: "Users" },
         },
         name: {
           type: Sequelize.STRING,
+          allowNull: false,
+          unique: true,
         },
         about: {
           type: Sequelize.TEXT,
         },
         type: {
-          type: Sequelize.ENUM("Online", "In person"),
+          type: Sequelize.ENUM("In Person", "Online"),
+          defaultValue: "In Person",
         },
         private: {
           type: Sequelize.BOOLEAN,
+          defaultValue: true,
         },
         city: {
           type: Sequelize.STRING,

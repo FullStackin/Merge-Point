@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       groupId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        onDelete: "Cascade",
+        allowNull: true,
+        onDelete: "set null",
       },
       address: {
         type: DataTypes.STRING,
@@ -33,10 +33,22 @@ module.exports = (sequelize, DataTypes) => {
       lat: {
         type: DataTypes.FLOAT,
         allowNull: false,
+        validate: {
+          isLatLong(value) {
+            if (!validator.isLatLong(`${value},0`))
+              throw new Error("Must be valid latitude");
+          },
+        },
       },
       lng: {
         type: DataTypes.FLOAT,
         allowNull: false,
+        validate: {
+          isLatLong(value) {
+            if (!validator.isLatLong(`0,${value}`))
+              throw new Error("Must be valid longitude");
+          },
+        },
       },
     },
     {
@@ -46,4 +58,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return Venue;
 };
-

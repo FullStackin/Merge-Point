@@ -1,11 +1,13 @@
 "use strict";
+/** @type {import('sequelize-cli').Migration} */
+
 let options = {};
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
       "Events",
       {
@@ -16,39 +18,42 @@ module.exports = {
           type: Sequelize.INTEGER,
         },
         venueId: {
-          allowNull: true,
           type: Sequelize.INTEGER,
-          references: {
-            model: "Venues",
-          },
+          references: { model: "Venues" },
         },
         groupId: {
           type: Sequelize.INTEGER,
-          onDelete: "CASCADE",
-          references: {
-            model: "Groups",
-          },
+          allowNull: false,
+          references: { model: "Groups" },
+          onDelete: "cascade",
         },
         name: {
           type: Sequelize.STRING,
+          allowNull: false,
         },
         description: {
           type: Sequelize.TEXT,
+          allowNull: false,
         },
         type: {
-          type: Sequelize.ENUM("Online", "In person"),
+          type: Sequelize.ENUM("In Person", "Online"),
+          defaultValue: "In Person",
         },
         capacity: {
           type: Sequelize.INTEGER,
+          allowNull: false,
         },
         price: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.FLOAT,
+          defaultValue: 0,
         },
         startDate: {
           type: Sequelize.DATE,
+          allowNull: false,
         },
         endDate: {
           type: Sequelize.DATE,
+          allowNull: false,
         },
         createdAt: {
           allowNull: false,
@@ -63,9 +68,14 @@ module.exports = {
       },
       options
     );
+    options.tableName = "Events";
+    await queryInterface.addIndex(options, ["groupId", "name"], {
+      unique: true,
+    });
   },
-  down: async (queryInterface, Sequelize) => {
+  async down(queryInterface, Sequelize) {
     options.tableName = "Events";
     await queryInterface.dropTable(options);
+    await queryInterface.removeIndex(options, ["groupId", "name"]);
   },
 };

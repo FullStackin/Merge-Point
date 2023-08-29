@@ -19,11 +19,9 @@ module.exports = {
         },
         groupId: {
           type: Sequelize.INTEGER,
-          onDelete: "Cascade",
-          references: {
-            model: "Groups",
-            key: "id",
-          },
+          allowNull: true,
+          references: { model: "Groups" },
+          onDelete: "set null",
         },
         address: {
           type: Sequelize.STRING,
@@ -39,9 +37,11 @@ module.exports = {
         },
         lat: {
           type: Sequelize.FLOAT,
+          allowNull: false,
         },
         lng: {
           type: Sequelize.FLOAT,
+          allowNull: false,
         },
         createdAt: {
           allowNull: false,
@@ -56,9 +56,14 @@ module.exports = {
       },
       options
     );
+    options.tableName = "Venues";
+    await queryInterface.addIndex(options, ["groupId", "address"], {
+      unique: true,
+    });
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Venues";
     await queryInterface.dropTable(options);
+    await queryInterface.removeIndex(options, ["groupId", "address"]);
   },
 };

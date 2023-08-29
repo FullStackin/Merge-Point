@@ -3,24 +3,29 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Attendance extends Model {
     static associate(models) {
-      Attendance.belongsTo(models.Event, { foreignKey: "eventId" });
-      Attendance.belongsTo(models.User, { foreignKey: "userId" });
+      // define association here
     }
   }
   Attendance.init(
     {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        unique: true,
+        autoIncrement: true,
+      },
       eventId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        onDelete: "Cascade",
+        onDelete: "cascade",
       },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        onDelete: "cascade",
       },
       status: {
-        type: DataTypes.ENUM("attending", "pending", "waitlist"),
-        allowNull: false,
+        type: DataTypes.ENUM("attending", "waitlist", "pending"),
         defaultValue: "pending",
       },
     },

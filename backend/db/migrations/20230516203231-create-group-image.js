@@ -19,17 +19,17 @@ module.exports = {
         },
         groupId: {
           type: Sequelize.INTEGER,
-          onDelete: "CASCADE",
-          references: {
-            model: "Groups",
-            key: "id",
-          },
+          allowNull: false,
+          references: { model: "Groups" },
+          onDelete: "cascade",
         },
         url: {
           type: Sequelize.STRING,
+          allowNull: false,
         },
         preview: {
           type: Sequelize.BOOLEAN,
+          defaultValue: true,
         },
         createdAt: {
           allowNull: false,
@@ -44,6 +44,7 @@ module.exports = {
       },
       options
     );
+    options.tableName = "GroupImages";
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "GroupImages";

@@ -19,19 +19,19 @@ module.exports = {
         },
         userId: {
           type: Sequelize.INTEGER,
-          references: {
-            model: "Users",
-          },
+          allowNull: false,
+          references: { model: "Users" },
+          onDelete: "cascade",
         },
         groupId: {
           type: Sequelize.INTEGER,
-          onDelete: "Cascade",
-          references: {
-            model: "Groups",
-          },
+          allowNull: false,
+          references: { model: "Groups" },
+          onDelete: "cascade",
         },
         status: {
-          type: Sequelize.ENUM("co-host", "member", "pending"),
+          type: Sequelize.ENUM("member", "pending", "co-host"),
+          defaultValue: "pending",
         },
         createdAt: {
           allowNull: false,

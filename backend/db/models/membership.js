@@ -1,38 +1,37 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Membership extends Model {
     static associate(models) {
-      Membership.belongsTo(models.User, {
-        foreignKey: "userId",
-      });
-      Membership.belongsTo(models.Group, {
-        foreignKey: "groupId",
-      });
+      // define association here
     }
   }
-  Membership.init(
-    {
-      groupId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        onDelete: "Cascade",
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      status: {
-        type: DataTypes.ENUM,
-        allowNull: false,
-        values: ["member", "pending", "host", "co-host"],
-        defaultValue: "pending",
-      },
+  Membership.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      unique: true,
+      autoIncrement: true
     },
-    {
-      sequelize,
-      modelName: "Membership",
-    }
-  );
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      onDelete: "cascade"
+    },
+    groupId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      onDelete: "cascade"
+    },
+    status: {
+      type: DataTypes.ENUM('member', 'pending', 'co-host'),
+      defaultValue: "pending"
+    },
+  }, {
+    sequelize,
+    modelName: 'Membership',
+  });
   return Membership;
 };

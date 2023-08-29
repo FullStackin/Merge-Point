@@ -19,34 +19,37 @@ module.exports = {
         },
         eventId: {
           type: Sequelize.INTEGER,
-          onDelete: "CASCADE",
-          references: {
-            model: "Events",
-            key: "id",
-          },
+          allowNull: false,
+          references: { model: "Events" },
+          onDelete: "cascade",
         },
         url: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
+          allowNull: false,
         },
         preview: {
           type: Sequelize.BOOLEAN,
+          defaultValue: false,
         },
         createdAt: {
-          allowNull: false,
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
         updatedAt: {
-          allowNull: false,
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
       },
       options
     );
+    options.tableName = "EventImages";
+    await queryInterface.addIndex(options, ["eventId", "url"], {
+      unique: true,
+    });
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "EventImages";
     await queryInterface.dropTable(options);
+    await queryInterface.removeIndex(options, ["eventId", "url"]);
   },
 };
